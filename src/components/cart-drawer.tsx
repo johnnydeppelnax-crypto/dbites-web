@@ -2,7 +2,6 @@
 
 import { useStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
@@ -16,8 +15,8 @@ export default function CartDrawer() {
 
   return (
     <Sheet open={cartOpen} onOpenChange={setCartOpen}>
-      <SheetContent className="w-full sm:max-w-md flex flex-col">
-        <SheetHeader>
+      <SheetContent className="w-full sm:max-w-md flex flex-col p-0">
+        <SheetHeader className="p-6 pb-4 border-b border-border/50">
           <SheetTitle className="flex items-center gap-2">
             <ShoppingBag className="h-5 w-5 text-primary" />
             Your Cart
@@ -31,24 +30,24 @@ export default function CartDrawer() {
 
         {cart.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-4 py-12">
-            <div className="text-6xl">🛒</div>
-            <p className="text-muted-foreground text-center">
-              Your cart is empty
+            <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center text-5xl">🛒</div>
+            <h3 className="text-lg font-semibold">Your cart is empty</h3>
+            <p className="text-sm text-muted-foreground text-center max-w-xs">
+              Add some delicious dehydrated fruits to get started!
             </p>
             <Button
               onClick={() => {
                 setCartOpen(false)
                 useStore.getState().setCurrentView('shop')
               }}
-              variant="outline"
-              className="mt-2"
+              className="mt-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white"
             >
               Browse Products
             </Button>
           </div>
         ) : (
           <>
-            <div className="flex-1 overflow-y-auto py-4 space-y-1">
+            <div className="flex-1 overflow-y-auto p-6 space-y-1">
               <AnimatePresence>
                 {cart.map((item) => (
                   <motion.div
@@ -57,43 +56,37 @@ export default function CartDrawer() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="flex gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                    className="flex gap-4 p-3 rounded-xl hover:bg-muted/50 transition-colors"
                   >
-                    <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center text-2xl shrink-0">
+                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center text-2xl shrink-0 border border-amber-100">
                       {item.product.image}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-medium truncate">{item.product.name}</h4>
-                      <p className="text-sm text-primary font-semibold">${item.product.price.toFixed(2)}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-7 w-7"
+                      <h4 className="text-sm font-semibold truncate">{item.product.name}</h4>
+                      <p className="text-sm text-primary font-bold">${item.product.price.toFixed(2)}</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          className="w-7 h-7 rounded-lg border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
                         >
                           <Minus className="h-3 w-3" />
-                        </Button>
-                        <span className="text-sm w-6 text-center">{item.quantity}</span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-7 w-7"
+                        </button>
+                        <span className="text-sm font-semibold w-6 text-center">{item.quantity}</span>
+                        <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          className="w-7 h-7 rounded-lg border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
                         >
                           <Plus className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7 ml-auto text-destructive hover:text-destructive"
+                        </button>
+                        <button
                           onClick={() => removeFromCart(item.product.id)}
+                          className="ml-auto w-7 h-7 rounded-lg flex items-center justify-center text-destructive hover:bg-destructive/10 transition-colors"
                         >
                           <Trash2 className="h-3 w-3" />
-                        </Button>
+                        </button>
                       </div>
                     </div>
-                    <div className="text-sm font-medium text-right shrink-0">
+                    <div className="text-sm font-bold text-right shrink-0 pt-0.5">
                       ${(item.product.price * item.quantity).toFixed(2)}
                     </div>
                   </motion.div>
@@ -101,23 +94,22 @@ export default function CartDrawer() {
               </AnimatePresence>
             </div>
 
-            <div className="border-t pt-4 space-y-3">
+            <div className="border-t border-border/50 p-6 space-y-3 bg-muted/20">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>${total.toFixed(2)}</span>
+                <span className="font-medium">${total.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax (8%)</span>
-                <span>${tax.toFixed(2)}</span>
+                <span className="font-medium">${tax.toFixed(2)}</span>
               </div>
               <Separator />
-              <div className="flex justify-between font-semibold">
+              <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span className="text-primary">${grandTotal.toFixed(2)}</span>
               </div>
               <Button
-                className="w-full mt-2"
-                size="lg"
+                className="w-full mt-3 py-6 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-amber-500/25"
                 onClick={() => {
                   setCartOpen(false)
                   setCheckoutOpen(true)

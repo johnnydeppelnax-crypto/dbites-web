@@ -5,21 +5,29 @@ import ProductCard from './product-card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Search, X } from 'lucide-react'
+import { Search, X, SlidersHorizontal } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 const categories = ['All', 'Tropical', 'Berries', 'Citrus', 'Exotic', 'Classic']
+
+const categoryEmojis: Record<string, string> = {
+  All: '🌿',
+  Tropical: '🌴',
+  Berries: '🫐',
+  Citrus: '🍊',
+  Exotic: '🐉',
+  Classic: '🍎',
+}
 
 export default function ProductCatalog() {
   const { products, selectedCategory, setSelectedCategory, searchQuery, setSearchQuery, sortBy, setSortBy } = useStore()
 
-  // Filter products
   let filtered = products.filter((p) => {
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory
     const matchesSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
-  // Sort products
   switch (sortBy) {
     case 'price-low':
       filtered.sort((a, b) => a.price - b.price)
@@ -36,43 +44,53 @@ export default function ProductCatalog() {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-background">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Our <span className="text-primary">Collection</span>
-          </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Explore our full range of premium dehydrated fruits. From tropical
-            delights to classic favorites, there is something for every palate.
-          </p>
-        </div>
+    <section className="py-20 md:py-28 bg-background relative">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-amber-100/30 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-orange-100/30 rounded-full blur-3xl" />
 
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          {/* Search */}
+      <div className="relative container mx-auto px-4">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <span className="text-sm font-semibold text-primary tracking-widest uppercase mb-3 block">
+            Our Collection
+          </span>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-5">
+            Explore <span className="gradient-text">All Flavors</span>
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
+            From tropical delights to classic favorites, there is a perfect bite for every palate.
+          </p>
+        </motion.div>
+
+        {/* Filters bar */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-8 p-4 rounded-2xl bg-card border border-border/50 shadow-sm">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search products..."
+              placeholder="Search delicious fruits..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
+              className="pl-10 border-border/50 focus:border-primary"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2"
               >
-                <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                <X className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
               </button>
             )}
           </div>
 
-          {/* Sort */}
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectTrigger className="w-full sm:w-[200px] border-border/50">
+              <SlidersHorizontal className="h-4 w-4 mr-2 text-muted-foreground" />
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -85,16 +103,21 @@ export default function ProductCatalog() {
           </Select>
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        {/* Category pills */}
+        <div className="flex flex-wrap gap-2 mb-10">
           {categories.map((cat) => (
             <Button
               key={cat}
               variant={selectedCategory === cat ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedCategory(cat)}
-              className="rounded-full"
+              className={`rounded-full px-5 transition-all duration-300 ${
+                selectedCategory === cat
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 border-0'
+                  : 'hover:border-primary/50'
+              }`}
             >
+              <span className="mr-1.5">{categoryEmojis[cat]}</span>
               {cat}
             </Button>
           ))}
@@ -108,10 +131,14 @@ export default function ProductCatalog() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <div className="text-5xl mb-4">🔍</div>
-            <h3 className="text-lg font-semibold mb-2">No products found</h3>
-            <p className="text-muted-foreground mb-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-20"
+          >
+            <div className="text-6xl mb-6">🔍</div>
+            <h3 className="text-xl font-bold mb-3">No products found</h3>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Try adjusting your search or filter to find what you&apos;re looking for.
             </p>
             <Button
@@ -120,10 +147,18 @@ export default function ProductCatalog() {
                 setSearchQuery('')
                 setSelectedCategory('All')
               }}
+              className="px-8"
             >
               Clear Filters
             </Button>
-          </div>
+          </motion.div>
+        )}
+
+        {/* Results count */}
+        {filtered.length > 0 && (
+          <p className="text-center text-sm text-muted-foreground mt-10">
+            Showing {filtered.length} of {products.length} products
+          </p>
         )}
       </div>
     </section>

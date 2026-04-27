@@ -7,66 +7,86 @@ const features = [
   {
     icon: Leaf,
     title: '100% Natural',
-    description: 'Every fruit is naturally dehydrated without any artificial preservatives, colors, or flavors. Pure fruit goodness in every bite.',
-    color: 'bg-green-100 text-green-700',
+    description: 'Every fruit is naturally dehydrated without any artificial preservatives, colors, or flavors. Pure fruit goodness in every single bite you take.',
+    gradient: 'from-emerald-400 to-green-500',
+    bgGlow: 'bg-emerald-100',
+    iconColor: 'text-emerald-600',
   },
   {
     icon: Shield,
     title: 'No Preservatives',
-    description: 'We believe in clean eating. Our dehydration process preserves freshness naturally, so you never have to worry about harmful additives.',
-    color: 'bg-amber-100 text-amber-700',
+    description: 'We believe in clean eating. Our dehydration process preserves freshness naturally, so you never have to worry about harmful additives in your food.',
+    gradient: 'from-amber-400 to-orange-500',
+    bgGlow: 'bg-amber-100',
+    iconColor: 'text-amber-600',
   },
   {
     icon: Award,
     title: 'Premium Quality',
-    description: 'Only the finest, freshest fruits make the cut. We source from trusted farms and hand-select each batch for exceptional quality and taste.',
-    color: 'bg-orange-100 text-orange-700',
+    description: 'Only the finest, freshest fruits make the cut. We source from trusted farms and hand-select each batch for exceptional quality and unforgettable taste.',
+    gradient: 'from-orange-400 to-red-500',
+    bgGlow: 'bg-orange-100',
+    iconColor: 'text-orange-600',
   },
   {
     icon: Truck,
     title: 'Mobile Fresh',
-    description: 'As a mobile social hub, D-Bites brings premium snacks directly to you. Fresh, convenient, and always ready to elevate your day.',
-    color: 'bg-purple-100 text-purple-700',
+    description: 'As a mobile social hub, D-Bites brings premium snacks directly to you. Fresh, convenient, and always ready to elevate your everyday experience.',
+    gradient: 'from-violet-400 to-purple-500',
+    bgGlow: 'bg-violet-100',
+    iconColor: 'text-violet-600',
   },
 ]
 
 export default function WhyDBites() {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-amber-50/50 to-background">
-      <div className="container mx-auto px-4">
+    <section className="py-20 md:py-28 bg-gradient-to-b from-amber-50/60 via-orange-50/30 to-background relative overflow-hidden">
+      {/* Background shapes */}
+      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-amber-200/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-200/20 rounded-full blur-3xl" />
+
+      <div className="relative container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Why Choose <span className="text-primary">D-Bites</span>?
+          <span className="text-sm font-semibold text-primary tracking-widest uppercase mb-3 block">
+            Our Promise
+          </span>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-5">
+            Why Choose <span className="gradient-text">D-Bites</span>?
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
             We are committed to delivering the finest dehydrated fruits with an
             unwavering focus on quality, freshness, and your well-being.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, i) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="text-center p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300"
+              transition={{ duration: 0.5, delay: i * 0.12, ease: "easeOut" }}
+              className="group text-center"
             >
-              <div className={`w-14 h-14 rounded-xl ${feature.color} flex items-center justify-center mx-auto mb-4`}>
-                <feature.icon className="h-7 w-7" />
+              <div className="relative p-8 rounded-3xl bg-card border border-border/50 hover:border-transparent shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
+                {/* Hover gradient overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+                
+                <div className={`w-16 h-16 rounded-2xl ${feature.bgGlow} flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                  <feature.icon className={`h-8 w-8 ${feature.iconColor}`} />
+                </div>
+                <h3 className="font-bold text-xl mb-3">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
             </motion.div>
           ))}
         </div>
