@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Star, Plus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { toast } from 'sonner'
+import TiltCard from './tilt-card'
 
 interface ProductCardProps {
   product: Product
@@ -39,78 +40,88 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.06, ease: "easeOut" }}
     >
-      <Card
-        className="group cursor-pointer overflow-hidden border-0 shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-card"
-        onClick={() => setSelectedProduct(product)}
-      >
-        <div className="relative">
-          {/* Image area with category-matched gradient */}
-          <div className={`aspect-square bg-gradient-to-br ${styles.gradient} flex items-center justify-center relative overflow-hidden`}>
-            {/* Decorative circles */}
-            <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/20" />
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 rounded-full bg-white/15" />
-            
-            <span className="text-7xl md:text-8xl group-hover:scale-125 transition-transform duration-700 ease-out drop-shadow-lg">
-              {product.image}
-            </span>
-
-            {/* Featured badge */}
-            {product.featured && (
-              <div className="absolute top-3 left-3">
-                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-md text-xs font-semibold px-3 py-1">
-                  ⭐ Featured
-                </Badge>
+      <TiltCard maxTilt={12} scale={1.02} className="rounded-2xl">
+        <Card
+          className="group cursor-pointer overflow-hidden border-0 shadow-3d shadow-3d-hover transition-all duration-300 bg-card rounded-2xl"
+          onClick={() => setSelectedProduct(product)}
+        >
+          <div className="relative">
+            {/* Image area with 3D depth */}
+            <div className={`aspect-square bg-gradient-to-br ${styles.gradient} flex items-center justify-center relative overflow-hidden`}>
+              {/* 3D shadow layer behind the fruit */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10" />
+              
+              {/* Decorative 3D circles */}
+              <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-white/20 shadow-inner" />
+              <div className="absolute -bottom-6 -left-6 w-28 h-28 rounded-full bg-white/15 shadow-inner" />
+              
+              {/* 3D floating fruit emoji */}
+              <div className="relative">
+                <span className="text-7xl md:text-8xl group-hover:scale-125 transition-transform duration-700 ease-out drop-shadow-2xl filter">
+                  {product.image}
+                </span>
+                {/* 3D reflection/shadow under fruit */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/10 rounded-[50%] blur-sm" />
               </div>
-            )}
 
-            {/* Category badge */}
-            <div className="absolute top-3 right-3">
-              <span className={`${styles.bg} ${styles.text} text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm`}>
-                {product.category}
-              </span>
-            </div>
+              {/* Featured badge with 3D pop */}
+              {product.featured && (
+                <div className="absolute top-3 left-3">
+                  <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg shadow-amber-500/30 text-xs font-semibold px-3 py-1">
+                    ⭐ Featured
+                  </Badge>
+                </div>
+              )}
 
-            {/* Quick add overlay */}
-            <div className="absolute inset-x-0 bottom-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-              <Button
-                className="w-full bg-white/90 backdrop-blur-sm text-foreground hover:bg-white shadow-lg border-0"
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add to Cart
-              </Button>
-            </div>
-
-            {!product.inStock && (
-              <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center">
-                <span className="text-sm font-semibold bg-gray-800 text-white px-4 py-2 rounded-full">Out of Stock</span>
+              {/* Category badge */}
+              <div className="absolute top-3 right-3">
+                <span className={`${styles.bg} ${styles.text} text-[10px] font-bold px-2.5 py-1 rounded-full shadow-md`}>
+                  {product.category}
+                </span>
               </div>
-            )}
-          </div>
-        </div>
 
-        <CardContent className="p-5">
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <h3 className="font-bold text-base line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
-          </div>
+              {/* Quick add overlay with 3D slide-up */}
+              <div className="absolute inset-x-0 bottom-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                <Button
+                  className="w-full bg-white/90 backdrop-blur-sm text-foreground hover:bg-white shadow-lg border-0 rounded-xl"
+                  onClick={handleAddToCart}
+                  disabled={!product.inStock}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add to Cart
+                </Button>
+              </div>
 
-          <p className="text-xs text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
-            {product.description}
-          </p>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-xl font-extrabold text-primary">${product.price.toFixed(2)}</span>
-              <span className="text-xs text-muted-foreground ml-1.5">/ {product.weight}</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-amber-50 px-2 py-1 rounded-full">
-              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-              <span className="text-xs font-bold text-amber-700">{product.rating}</span>
+              {!product.inStock && (
+                <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center">
+                  <span className="text-sm font-semibold bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg">Out of Stock</span>
+                </div>
+              )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <h3 className="font-bold text-base line-clamp-1 group-hover:text-primary transition-colors">{product.name}</h3>
+            </div>
+
+            <p className="text-xs text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
+              {product.description}
+            </p>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-xl font-extrabold text-primary">${product.price.toFixed(2)}</span>
+                <span className="text-xs text-muted-foreground ml-1.5">/ {product.weight}</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-full shadow-sm">
+                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                <span className="text-xs font-bold text-amber-700">{product.rating}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </TiltCard>
     </motion.div>
   )
 }

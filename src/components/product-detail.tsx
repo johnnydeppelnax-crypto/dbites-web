@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { Star, Minus, Plus, ShoppingBag, Leaf, Flame } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const categoryGradients: Record<string, string> = {
   Tropical: 'from-amber-100 via-yellow-50 to-orange-100',
@@ -38,16 +39,31 @@ export default function ProductDetail() {
 
   return (
     <Dialog open={!!selectedProduct} onOpenChange={() => { setSelectedProduct(null); setQuantity(1) }}>
-      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto p-0 border-0 shadow-2xl">
+      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto p-0 border-0 shadow-2xl rounded-3xl">
         <div className="grid grid-cols-1 md:grid-cols-2">
-          {/* Image */}
+          {/* 3D Image area */}
           <div className={`aspect-square md:aspect-auto bg-gradient-to-br ${gradient} flex items-center justify-center relative overflow-hidden`}>
-            {/* Decorative circles */}
-            <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-white/20" />
-            <div className="absolute -bottom-8 -left-8 w-36 h-36 rounded-full bg-white/15" />
-            <div className="absolute top-1/2 right-0 w-24 h-24 rounded-full bg-white/10" />
+            {/* 3D depth layers */}
+            <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-white/20 shadow-inner" />
+            <div className="absolute -bottom-12 -left-12 w-44 h-44 rounded-full bg-white/15 shadow-inner" />
+            <div className="absolute top-1/2 right-0 w-28 h-28 rounded-full bg-white/10" />
+            <div className="absolute bottom-1/4 left-1/4 w-16 h-16 rounded-full bg-white/10" />
             
-            <span className="text-[100px] md:text-[140px] drop-shadow-lg">{selectedProduct.image}</span>
+            {/* 3D floating fruit */}
+            <motion.div
+              animate={{ 
+                y: [-5, 5, -5],
+                rotateY: [0, 5, 0],
+                rotateX: [0, -3, 0],
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <span className="text-[100px] md:text-[140px] drop-shadow-2xl">{selectedProduct.image}</span>
+            </motion.div>
+            
+            {/* Ground shadow for 3D effect */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-32 h-6 bg-black/10 rounded-[50%] blur-md" />
           </div>
 
           {/* Details */}
@@ -89,14 +105,14 @@ export default function ProductDetail() {
             </p>
 
             <div className="grid grid-cols-2 gap-3 mb-6">
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-green-50">
+              <motion.div whileHover={{ scale: 1.03, rotateY: 3 }} className="flex items-center gap-2 p-3 rounded-xl bg-green-50 shadow-sm">
                 <Leaf className="h-4 w-4 text-green-600" />
                 <span className="text-xs font-medium text-green-700">100% Natural</span>
-              </div>
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-orange-50">
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.03, rotateY: -3 }} className="flex items-center gap-2 p-3 rounded-xl bg-orange-50 shadow-sm">
                 <Flame className="h-4 w-4 text-orange-600" />
                 <span className="text-xs font-medium text-orange-700">No Preservatives</span>
-              </div>
+              </motion.div>
             </div>
 
             <Separator className="my-1" />
@@ -109,11 +125,11 @@ export default function ProductDetail() {
             <div className="mt-auto space-y-5 pt-4">
               <div className="flex items-center gap-4">
                 <span className="text-sm font-semibold">Quantity</span>
-                <div className="flex items-center gap-2 bg-muted rounded-full p-1">
+                <div className="flex items-center gap-2 bg-muted rounded-full p-1 shadow-inner">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-full hover:bg-background"
+                    className="h-8 w-8 rounded-full hover:bg-background shadow-sm"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   >
                     <Minus className="h-3 w-3" />
@@ -122,7 +138,7 @@ export default function ProductDetail() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-full hover:bg-background"
+                    className="h-8 w-8 rounded-full hover:bg-background shadow-sm"
                     onClick={() => setQuantity(quantity + 1)}
                   >
                     <Plus className="h-3 w-3" />
@@ -131,7 +147,7 @@ export default function ProductDetail() {
               </div>
 
               <Button
-                className="w-full py-6 text-base bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-300"
+                className="w-full py-6 text-base bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-300 rounded-xl"
                 onClick={handleAddToCart}
                 disabled={!selectedProduct.inStock}
               >

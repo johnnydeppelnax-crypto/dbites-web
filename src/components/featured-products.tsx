@@ -13,7 +13,7 @@ export default function FeaturedProducts() {
 
   return (
     <section className="py-20 md:py-28 relative overflow-hidden">
-      {/* Background decorations */}
+      {/* 3D background decorations */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-amber-100/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-orange-100/40 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
 
@@ -61,7 +61,7 @@ export default function FeaturedProducts() {
             variant="outline"
             size="lg"
             onClick={() => setCurrentView('shop')}
-            className="px-10 py-6 text-base border-2 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+            className="px-10 py-6 text-base border-2 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-500 hover:text-white hover:border-transparent transition-all duration-300 rounded-xl shadow-3d"
           >
             View All Products
             <ArrowRight className="ml-2 h-5 w-5" />
