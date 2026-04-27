@@ -12,31 +12,29 @@ export default function FeaturedProducts() {
   const { setCurrentView } = useStore()
 
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden">
-      {/* 3D background decorations */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-amber-100/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-orange-100/40 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
-
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
       <div className="relative container mx-auto px-4">
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
-          <span className="text-sm font-semibold text-primary tracking-widest uppercase mb-3 block">
+          <span className="text-sm font-medium text-accent tracking-widest uppercase mb-3 block">
             Customer Favorites
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-5">
+          <h2 className="text-4xl md:text-5xl font-bold mb-5">
             Our <span className="gradient-text">Bestsellers</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Discover our most popular dehydrated fruits, handpicked for their
-            exceptional flavor and quality. Each bite is a taste of perfection.
+          <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            Discover our most loved dehydrated fruits — each one carefully crafted
+            to deliver the purest flavor and finest texture.
           </p>
         </motion.div>
 
+        {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featured.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
@@ -45,26 +43,26 @@ export default function FeaturedProducts() {
 
         {featured.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-muted-foreground">Loading delicious products...</p>
+            <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-muted-foreground text-sm">Loading delicious products...</p>
           </div>
         )}
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
           className="text-center mt-14"
         >
           <Button
             variant="outline"
             size="lg"
             onClick={() => setCurrentView('shop')}
-            className="px-10 py-6 text-base border-2 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-500 hover:text-white hover:border-transparent transition-all duration-300 rounded-xl shadow-3d"
+            className="px-8 py-5 text-sm border-primary/30 text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-xl"
           >
             View All Products
-            <ArrowRight className="ml-2 h-5 w-5" />
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </motion.div>
       </div>

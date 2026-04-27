@@ -17,7 +17,7 @@ export default function CartDrawer() {
     <Sheet open={cartOpen} onOpenChange={setCartOpen}>
       <SheetContent className="w-full sm:max-w-md flex flex-col p-0">
         <SheetHeader className="p-6 pb-4 border-b border-border/50">
-          <SheetTitle className="flex items-center gap-2">
+          <SheetTitle className="flex items-center gap-2 text-lg">
             <ShoppingBag className="h-5 w-5 text-primary" />
             Your Cart
             {cart.length > 0 && (
@@ -30,8 +30,10 @@ export default function CartDrawer() {
 
         {cart.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-4 py-12">
-            <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center text-5xl">🛒</div>
-            <h3 className="text-lg font-semibold">Your cart is empty</h3>
+            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+              <ShoppingBag className="h-7 w-7 text-muted-foreground" />
+            </div>
+            <h3 className="text-base font-semibold">Your cart is empty</h3>
             <p className="text-sm text-muted-foreground text-center max-w-xs">
               Add some delicious dehydrated fruits to get started!
             </p>
@@ -40,7 +42,7 @@ export default function CartDrawer() {
                 setCartOpen(false)
                 useStore.getState().setCurrentView('shop')
               }}
-              className="mt-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white"
+              className="mt-2 bg-primary hover:bg-primary/90 text-white"
             >
               Browse Products
             </Button>
@@ -56,33 +58,37 @@ export default function CartDrawer() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="flex gap-4 p-3 rounded-xl hover:bg-muted/50 transition-colors"
+                    className="flex gap-3 p-3 rounded-xl hover:bg-muted/50 transition-colors"
                   >
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center text-2xl shrink-0 border border-amber-100">
-                      {item.product.image}
+                    <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-border/50">
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-semibold truncate">{item.product.name}</h4>
                       <p className="text-sm text-primary font-bold">${item.product.price.toFixed(2)}</p>
-                      <div className="flex items-center gap-2 mt-2">
+                      <div className="flex items-center gap-2 mt-1.5">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="w-7 h-7 rounded-lg border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
+                          className="w-6 h-6 rounded-md border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
                         >
-                          <Minus className="h-3 w-3" />
+                          <Minus className="h-2.5 w-2.5" />
                         </button>
-                        <span className="text-sm font-semibold w-6 text-center">{item.quantity}</span>
+                        <span className="text-sm font-semibold w-5 text-center">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-7 h-7 rounded-lg border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
+                          className="w-6 h-6 rounded-md border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
                         >
-                          <Plus className="h-3 w-3" />
+                          <Plus className="h-2.5 w-2.5" />
                         </button>
                         <button
                           onClick={() => removeFromCart(item.product.id)}
-                          className="ml-auto w-7 h-7 rounded-lg flex items-center justify-center text-destructive hover:bg-destructive/10 transition-colors"
+                          className="ml-auto w-6 h-6 rounded-md flex items-center justify-center text-destructive hover:bg-destructive/10 transition-colors"
                         >
-                          <Trash2 className="h-3 w-3" />
+                          <Trash2 className="h-2.5 w-2.5" />
                         </button>
                       </div>
                     </div>
@@ -94,7 +100,7 @@ export default function CartDrawer() {
               </AnimatePresence>
             </div>
 
-            <div className="border-t border-border/50 p-6 space-y-3 bg-muted/20">
+            <div className="border-t border-border/50 p-6 space-y-3 bg-muted/10">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-medium">${total.toFixed(2)}</span>
@@ -109,7 +115,7 @@ export default function CartDrawer() {
                 <span className="text-primary">${grandTotal.toFixed(2)}</span>
               </div>
               <Button
-                className="w-full mt-3 py-6 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-amber-500/25"
+                className="w-full mt-2 py-5 bg-primary hover:bg-primary/90 text-white shadow-sm rounded-xl"
                 onClick={() => {
                   setCartOpen(false)
                   setCheckoutOpen(true)

@@ -2,103 +2,88 @@
 
 import { motion } from 'framer-motion'
 import { Leaf, Shield, Award, Truck } from 'lucide-react'
-import TiltCard from './tilt-card'
 
 const features = [
   {
     icon: Leaf,
     title: '100% Natural',
-    description: 'Every fruit is naturally dehydrated without any artificial preservatives, colors, or flavors. Pure fruit goodness in every single bite you take.',
-    gradient: 'from-emerald-400 to-green-500',
-    bgGlow: 'bg-emerald-50',
-    iconColor: 'text-emerald-600',
-    emoji: '🌿',
+    description: 'Every fruit is naturally dehydrated without artificial preservatives, colors, or flavors. Pure fruit goodness in every bite.',
+    color: 'text-green-600',
+    bgColor: 'bg-green-50',
+    borderColor: 'border-green-100',
   },
   {
     icon: Shield,
     title: 'No Preservatives',
-    description: 'We believe in clean eating. Our dehydration process preserves freshness naturally, so you never have to worry about harmful additives in your food.',
-    gradient: 'from-amber-400 to-orange-500',
-    bgGlow: 'bg-amber-50',
-    iconColor: 'text-amber-600',
-    emoji: '🛡️',
+    description: 'Our dehydration process preserves freshness naturally. Clean eating without harmful additives or hidden ingredients.',
+    color: 'text-orange-600',
+    bgColor: 'bg-orange-50',
+    borderColor: 'border-orange-100',
   },
   {
     icon: Award,
     title: 'Premium Quality',
-    description: 'Only the finest, freshest fruits make the cut. We source from trusted farms and hand-select each batch for exceptional quality and unforgettable taste.',
-    gradient: 'from-orange-400 to-red-500',
-    bgGlow: 'bg-orange-50',
-    iconColor: 'text-orange-600',
-    emoji: '🏆',
+    description: 'Only the finest, freshest fruits make the cut. Hand-selected from trusted farms for exceptional quality and taste.',
+    color: 'text-amber-600',
+    bgColor: 'bg-amber-50',
+    borderColor: 'border-amber-100',
   },
   {
     icon: Truck,
     title: 'Mobile Fresh',
-    description: 'As a mobile social hub, D-Bites brings premium snacks directly to you. Fresh, convenient, and always ready to elevate your everyday experience.',
-    gradient: 'from-violet-400 to-purple-500',
-    bgGlow: 'bg-violet-50',
-    iconColor: 'text-violet-600',
-    emoji: '🚚',
+    description: 'As a mobile social hub, D-Bites brings premium snacks directly to you. Fresh, convenient, and always ready.',
+    color: 'text-violet-600',
+    bgColor: 'bg-violet-50',
+    borderColor: 'border-violet-100',
   },
 ]
 
 export default function WhyDBites() {
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-amber-50/60 via-orange-50/30 to-background relative overflow-hidden">
-      {/* 3D background shapes */}
-      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-amber-200/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-200/20 rounded-full blur-3xl" />
+    <section className="py-20 md:py-28 bg-muted/30 relative overflow-hidden">
+      {/* Subtle organic shape */}
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-green-50/40 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-orange-50/40 rounded-full blur-3xl" />
 
       <div className="relative container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <span className="text-sm font-semibold text-primary tracking-widest uppercase mb-3 block">
+          <span className="text-sm font-medium text-accent tracking-widest uppercase mb-3 block">
             Our Promise
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-5">
+          <h2 className="text-4xl md:text-5xl font-bold mb-5">
             Why Choose <span className="gradient-text">D-Bites</span>?
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            We are committed to delivering the finest dehydrated fruits with an
-            unwavering focus on quality, freshness, and your well-being.
+          <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            We deliver the finest dehydrated fruits with an unwavering focus on
+            quality, freshness, and your well-being.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, i) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 40, rotateX: 10 }}
-              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.12, ease: "easeOut" }}
-              style={{ perspective: '1000px' }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              className="group"
             >
-              <TiltCard maxTilt={10} scale={1.02} className="h-full">
-                <div className="group text-center p-8 rounded-3xl bg-card border border-border/50 shadow-3d shadow-3d-hover transition-all duration-500 h-full relative overflow-hidden">
-                  {/* Hover gradient overlay with 3D depth */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-[0.06] transition-opacity duration-500`} />
-                  
-                  {/* 3D floating emoji in background */}
-                  <div className="absolute -top-4 -right-4 text-6xl opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-500 select-none">
-                    {feature.emoji}
-                  </div>
-
-                  <div className={`w-16 h-16 rounded-2xl ${feature.bgGlow} flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-md`}>
-                    <feature.icon className={`h-8 w-8 ${feature.iconColor}`} />
-                  </div>
-                  <h3 className="font-bold text-xl mb-3">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {feature.description}
-                  </p>
+              <div className={`p-6 rounded-2xl bg-white border ${feature.borderColor} card-lift h-full`}>
+                <div className={`w-12 h-12 rounded-xl ${feature.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
                 </div>
-              </TiltCard>
+                <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

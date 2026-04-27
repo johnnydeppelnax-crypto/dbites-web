@@ -7,7 +7,7 @@ const products = [
     slug: 'classic-mango-slices',
     description: 'Sweet, sun-dried mango perfection. Our Classic Mango Slices are made from premium Alphonso mangoes, carefully dehydrated to preserve their natural sweetness and vibrant flavor. Each bite delivers a burst of tropical sunshine that transports you to paradise.',
     price: 12.99,
-    image: '🥭',
+    image: '/products/mango.png',
     category: 'Tropical',
     featured: true,
     rating: 4.8,
@@ -21,7 +21,7 @@ const products = [
     slug: 'crispy-apple-rings',
     description: 'Light, crunchy apple rings with a hint of cinnamon. Made from freshly picked Granny Smith apples, these crispy rings are the perfect balance of tart and sweet with a warm cinnamon finish. A guilt-free snack that crunches with every bite.',
     price: 9.99,
-    image: '🍎',
+    image: '/products/apple.png',
     category: 'Classic',
     featured: true,
     rating: 4.6,
@@ -35,7 +35,7 @@ const products = [
     slug: 'tropical-pineapple-chunks',
     description: 'Sweet and tangy dried pineapple chunks that capture the essence of the tropics. These golden bites are dehydrated at peak ripeness to lock in the bold, vibrant pineapple flavor. Perfect as a snack or a tropical addition to your trail mix.',
     price: 11.49,
-    image: '🍍',
+    image: '/products/pineapple.png',
     category: 'Tropical',
     featured: true,
     rating: 4.7,
@@ -49,7 +49,7 @@ const products = [
     slug: 'berry-medley-mix',
     description: 'A luxurious blend of strawberries, blueberries, and raspberries. Our Berry Medley combines three of nature finest berries into one irresistible mix. Each berry is individually dried to preserve its unique flavor profile, creating a symphony of berry goodness in every handful.',
     price: 14.99,
-    image: '🫐',
+    image: '/products/berries.png',
     category: 'Berries',
     featured: true,
     rating: 4.9,
@@ -63,7 +63,7 @@ const products = [
     slug: 'golden-banana-chips',
     description: 'Crispy unsweetened banana chips that are naturally sweet and satisfyingly crunchy. Made from perfectly ripe Cavendish bananas, these golden chips are slowly dehydrated to achieve the ideal crispiness while maintaining their natural banana flavor.',
     price: 8.99,
-    image: '🍌',
+    image: '/products/banana.png',
     category: 'Classic',
     featured: false,
     rating: 4.4,
@@ -77,7 +77,7 @@ const products = [
     slug: 'zesty-orange-slices',
     description: 'Candied orange slices with natural zest that deliver a bright, citrusy burst of flavor. These sun-kissed slices capture the full essence of Valencia oranges, from the sweet flesh to the aromatic, tangy peel. A sophisticated treat for citrus lovers.',
     price: 10.99,
-    image: '🍊',
+    image: '/products/orange.png',
     category: 'Citrus',
     featured: false,
     rating: 4.5,
@@ -91,7 +91,7 @@ const products = [
     slug: 'exotic-dragon-fruit',
     description: 'Premium dried dragon fruit with its stunning magenta color and subtle sweetness. This exotic superfruit is carefully dehydrated to preserve its vibrant hue and delicate flavor. Rich in antioxidants and naturally beautiful, it is as nutritious as it is delicious.',
     price: 16.99,
-    image: '🐉',
+    image: '/products/dragonfruit.png',
     category: 'Exotic',
     featured: false,
     rating: 4.7,
@@ -105,7 +105,7 @@ const products = [
     slug: 'sweet-kiwi-coins',
     description: 'Chewy kiwi slices that pack a tangy-sweet punch. These emerald-green coins are made from sun-ripened kiwis, dehydrated to chewy perfection. The natural tartness of kiwi shines through, making these an addictive and wholesome snack.',
     price: 11.99,
-    image: '🥝',
+    image: '/products/kiwi.png',
     category: 'Exotic',
     featured: false,
     rating: 4.3,
@@ -119,7 +119,7 @@ const products = [
     slug: 'cinnamon-pear-bites',
     description: 'Spiced dried pear pieces infused with warm cinnamon. These tender pear bites combine the natural sweetness of Bartlett pears with the comforting warmth of Ceylon cinnamon. A cozy, autumn-inspired treat that is perfect any time of year.',
     price: 10.49,
-    image: '🍐',
+    image: '/products/pear.png',
     category: 'Classic',
     featured: false,
     rating: 4.5,
@@ -133,7 +133,7 @@ const products = [
     slug: 'pomegranate-arils',
     description: 'Tart-sweet dried pomegranate seeds that burst with flavor. These ruby-red arils are carefully extracted and dehydrated to create a crunchy, tangy-sweet superfood snack. Packed with antioxidants and bursting with pomegranate essence, they are nature candy at its finest.',
     price: 15.99,
-    image: '❤️',
+    image: '/products/pomegranate.png',
     category: 'Exotic',
     featured: false,
     rating: 4.6,
@@ -147,7 +147,7 @@ const products = [
     slug: 'coconut-strips',
     description: 'Toasted coconut strips with a satisfying crunch and rich, nutty flavor. Made from freshly harvested Thai coconuts, these strips are lightly toasted to bring out their natural oils and deepen their tropical flavor. An irresistible snack for coconut enthusiasts.',
     price: 9.49,
-    image: '🥥',
+    image: '/products/coconut.png',
     category: 'Tropical',
     featured: false,
     rating: 4.4,
@@ -161,7 +161,7 @@ const products = [
     slug: 'passion-fruit-leather',
     description: 'A roll of pure passion fruit leather that captures the intense tropical flavor of fresh passion fruit. This artisan fruit leather is made from 100% passion fruit puree, slow-dried into a chewy, tangy strip. It is the ultimate tropical indulgence in a convenient, rollable form.',
     price: 13.99,
-    image: '🥭',
+    image: '/products/passionfruit.png',
     category: 'Exotic',
     featured: false,
     rating: 4.8,
@@ -174,17 +174,14 @@ const products = [
 
 export async function POST() {
   try {
-    // Check if products already exist
-    const existing = await db.product.count()
-    if (existing > 0) {
-      return NextResponse.json({ message: 'Products already seeded', count: existing })
-    }
+    // Delete existing products and re-seed
+    await db.product.deleteMany()
 
     const result = await db.product.createMany({
       data: products,
     })
 
-    return NextResponse.json({ message: 'Products seeded successfully', count: result.count })
+    return NextResponse.json({ message: 'Products re-seeded successfully', count: result.count })
   } catch (error) {
     console.error('Error seeding products:', error)
     return NextResponse.json({ error: 'Failed to seed products' }, { status: 500 })

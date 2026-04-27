@@ -5,12 +5,12 @@ import ProductCard from './product-card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Search, X, SlidersHorizontal } from 'lucide-react'
+import { Search, X, SlidersHorizontal, Leaf } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const categories = ['All', 'Tropical', 'Berries', 'Citrus', 'Exotic', 'Classic']
 
-const categoryEmojis: Record<string, string> = {
+const categoryIcons: Record<string, string> = {
   All: '🌿',
   Tropical: '🌴',
   Berries: '🫐',
@@ -44,44 +44,40 @@ export default function ProductCatalog() {
   }
 
   return (
-    <section className="py-20 md:py-28 bg-background relative">
-      {/* Background decoration */}
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-amber-100/30 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-orange-100/30 rounded-full blur-3xl" />
-
+    <section className="py-20 md:py-28 bg-white relative">
       <div className="relative container mx-auto px-4">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <span className="text-sm font-semibold text-primary tracking-widest uppercase mb-3 block">
+          <span className="text-sm font-medium text-accent tracking-widest uppercase mb-3 block">
             Our Collection
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-5">
+          <h2 className="text-4xl md:text-5xl font-bold mb-5">
             Explore <span className="gradient-text">All Flavors</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
             From tropical delights to classic favorites, there is a perfect bite for every palate.
           </p>
         </motion.div>
 
-        {/* Filters bar */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8 p-4 rounded-2xl bg-card border border-border/50 shadow-sm">
+        {/* Filters bar - clean minimal */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-8 p-4 rounded-xl bg-muted/30 border border-border/30">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search delicious fruits..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 border-border/50 focus:border-primary"
+              className="pl-9 border-border/50 focus:border-primary bg-white"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2"
+                className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 <X className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
               </button>
@@ -89,7 +85,7 @@ export default function ProductCatalog() {
           </div>
 
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full sm:w-[200px] border-border/50">
+            <SelectTrigger className="w-full sm:w-[180px] border-border/50 bg-white">
               <SlidersHorizontal className="h-4 w-4 mr-2 text-muted-foreground" />
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
@@ -103,7 +99,7 @@ export default function ProductCatalog() {
           </Select>
         </div>
 
-        {/* Category pills */}
+        {/* Category pills - clean minimal */}
         <div className="flex flex-wrap gap-2 mb-10">
           {categories.map((cat) => (
             <Button
@@ -111,13 +107,13 @@ export default function ProductCatalog() {
               variant={selectedCategory === cat ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedCategory(cat)}
-              className={`rounded-full px-5 transition-all duration-300 ${
+              className={`rounded-full px-4 transition-all duration-300 text-sm ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 border-0'
-                  : 'hover:border-primary/50'
+                  ? 'bg-primary text-white shadow-sm border-primary'
+                  : 'border-border/50 hover:border-primary/30 hover:text-primary'
               }`}
             >
-              <span className="mr-1.5">{categoryEmojis[cat]}</span>
+              <span className="mr-1">{categoryIcons[cat]}</span>
               {cat}
             </Button>
           ))}
@@ -136,9 +132,11 @@ export default function ProductCatalog() {
             animate={{ opacity: 1 }}
             className="text-center py-20"
           >
-            <div className="text-6xl mb-6">🔍</div>
-            <h3 className="text-xl font-bold mb-3">No products found</h3>
-            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+              <Search className="h-6 w-6 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">No products found</h3>
+            <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
               Try adjusting your search or filter to find what you&apos;re looking for.
             </p>
             <Button
@@ -147,7 +145,7 @@ export default function ProductCatalog() {
                 setSearchQuery('')
                 setSelectedCategory('All')
               }}
-              className="px-8"
+              className="px-6"
             >
               Clear Filters
             </Button>
