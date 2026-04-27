@@ -46,7 +46,17 @@ export default function Home() {
   }, [setProducts])
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
+      {/* Background logo watermark */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <img
+          src="/dbites-logo.png"
+          alt=""
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[800px] h-auto object-contain opacity-[0.025] select-none"
+        />
+      </div>
+
+      <div className="relative z-10 flex flex-col min-h-screen">
       <Header />
       <main className="flex-1">
         <AnimatePresence mode="wait">
@@ -111,6 +121,7 @@ export default function Home() {
       <CartDrawer />
       <CheckoutModal />
       <ProductDetail />
+      </div>
     </div>
   )
 }

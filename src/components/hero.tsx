@@ -17,6 +17,15 @@ export default function Hero() {
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-green-50/50 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-amber-50/40 rounded-full blur-3xl" />
 
+      {/* Background logo watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <img
+          src="/dbites-logo.png"
+          alt=""
+          className="w-[500px] md:w-[700px] h-auto object-contain opacity-[0.04] select-none"
+        />
+      </div>
+
       {/* Hero fruit image - large, textured, organic */}
       <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block overflow-hidden">
         <div className="absolute inset-0">

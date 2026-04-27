@@ -21,6 +21,15 @@ export default function Footer() {
       {/* Subtle organic gradient top line */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary" />
 
+      {/* Background logo watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <img
+          src="/dbites-logo.png"
+          alt=""
+          className="w-[400px] h-auto object-contain opacity-[0.03] brightness-0 invert select-none"
+        />
+      </div>
+
       <div className="relative container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}

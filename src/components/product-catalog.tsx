@@ -44,7 +44,16 @@ export default function ProductCatalog() {
   }
 
   return (
-    <section className="py-20 md:py-28 bg-white relative">
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+      {/* Background logo watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <img
+          src="/dbites-logo.png"
+          alt=""
+          className="w-[500px] h-auto object-contain opacity-[0.03] select-none"
+        />
+      </div>
+
       <div className="relative container mx-auto px-4">
         {/* Header */}
         <motion.div
