@@ -25,10 +25,11 @@ export default function Header() {
           onClick={() => setCurrentView('home')}
           className="flex items-center gap-2 transition-opacity hover:opacity-80"
         >
-          <span className="text-2xl">🥭</span>
-          <span className="text-xl font-bold tracking-tight text-primary">
-            D-Bites
-          </span>
+          <img
+            src="/dbites-logo.png"
+            alt="D-Bites Logo"
+            className="h-10 w-auto object-contain"
+          />
         </button>
 
         {/* Desktop Nav */}

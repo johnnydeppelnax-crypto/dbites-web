@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "D-Bites" }],
   icons: {
-    icon: "/logo.svg",
+    icon: "/dbites-logo.png",
   },
   openGraph: {
     title: "D-Bites | Premium Dehydrated Fruits",

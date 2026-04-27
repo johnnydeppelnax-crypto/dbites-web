@@ -22,9 +22,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🥭</span>
-              <span className="text-xl font-bold text-primary-foreground">D-Bites</span>
+            <div className="mb-4">
+              <img
+                src="/dbites-logo.png"
+                alt="D-Bites Logo"
+                className="h-12 w-auto object-contain brightness-0 invert"
+              />
             </div>
             <p className="text-sm text-background/60 leading-relaxed">
               A mobile social hub designed to elevate the street-side dining
