@@ -74,27 +74,27 @@ export default function CheckoutModal() {
 
   return (
     <Dialog open={checkoutOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-lg">
             {orderPlaced ? 'Order Confirmed!' : 'Checkout'}
           </DialogTitle>
         </DialogHeader>
 
         {orderPlaced ? (
           <div className="flex flex-col items-center gap-4 py-8 text-center">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-              <CheckCircle2 className="h-8 w-8 text-green-600" />
+            <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center">
+              <CheckCircle2 className="h-7 w-7 text-green-600" />
             </div>
             <h3 className="text-lg font-semibold">Thank you for your order!</h3>
             <p className="text-sm text-muted-foreground">
               Your order has been placed successfully. We&apos;ll send a confirmation to your email.
             </p>
             <div className="bg-muted rounded-lg p-4 mt-2">
-              <p className="text-sm text-muted-foreground">Order Number</p>
+              <p className="text-xs text-muted-foreground">Order Number</p>
               <p className="text-lg font-mono font-semibold text-primary">{orderNumber}</p>
             </div>
-            <Button onClick={handleClose} className="mt-4">
+            <Button onClick={handleClose} className="mt-4 bg-primary hover:bg-primary/90 text-white">
               Continue Shopping
             </Button>
           </div>
@@ -102,7 +102,7 @@ export default function CheckoutModal() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name *</Label>
+                <Label htmlFor="name" className="text-sm">Full Name *</Label>
                 <Input
                   id="name"
                   required
@@ -112,7 +112,7 @@ export default function CheckoutModal() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
+                <Label htmlFor="email" className="text-sm">Email *</Label>
                 <Input
                   id="email"
                   type="email"
@@ -125,7 +125,7 @@ export default function CheckoutModal() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone" className="text-sm">Phone</Label>
               <Input
                 id="phone"
                 type="tel"
@@ -136,7 +136,7 @@ export default function CheckoutModal() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="address">Address *</Label>
+              <Label htmlFor="address" className="text-sm">Address *</Label>
               <Input
                 id="address"
                 required
@@ -148,7 +148,7 @@ export default function CheckoutModal() {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="city">City *</Label>
+                <Label htmlFor="city" className="text-sm">City *</Label>
                 <Input
                   id="city"
                   required
@@ -158,7 +158,7 @@ export default function CheckoutModal() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="state">State</Label>
+                <Label htmlFor="state" className="text-sm">State</Label>
                 <Input
                   id="state"
                   value={formData.state}
@@ -167,7 +167,7 @@ export default function CheckoutModal() {
                 />
               </div>
               <div className="space-y-2 col-span-2 sm:col-span-1">
-                <Label htmlFor="zipCode">Zip Code *</Label>
+                <Label htmlFor="zipCode" className="text-sm">Zip Code *</Label>
                 <Input
                   id="zipCode"
                   required
@@ -205,7 +205,7 @@ export default function CheckoutModal() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" size="lg" disabled={loading || cart.length === 0}>
+            <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white" size="lg" disabled={loading || cart.length === 0}>
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
