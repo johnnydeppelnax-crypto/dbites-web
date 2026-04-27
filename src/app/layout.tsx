@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "D-Bites | Premium Dehydrated Fruits & Gourmet Snacks",
+  title: "D-Bites | Premium Dehydrated Fruits & Tropical Snacks",
   description:
-    "D-Bites is a mobile social hub designed to elevate the street-side dining experience. We specialize in premium dehydrated fruits and gourmet snacks, bringing sophistication to every bite.",
+    "D-Bites is a mobile social hub designed to elevate the street-side dining experience. We specialize in premium dehydrated fruits and gourmet snacks, bringing tropical sunshine to every bite.",
   keywords: [
     "D-Bites",
     "dehydrated fruits",
@@ -25,15 +25,16 @@ export const metadata: Metadata = {
     "premium snacks",
     "healthy snacks",
     "mobile lounge",
+    "tropical fruits",
   ],
   authors: [{ name: "D-Bites" }],
   icons: {
     icon: "/dbites-logo.png",
   },
   openGraph: {
-    title: "D-Bites | Premium Dehydrated Fruits",
+    title: "D-Bites | Taste The Tropical Sunshine",
     description:
-      "The best taste in premium dehydrated fruits and gourmet snacks.",
+      "The best taste in premium dehydrated fruits and gourmet tropical snacks.",
     type: "website",
   },
 };

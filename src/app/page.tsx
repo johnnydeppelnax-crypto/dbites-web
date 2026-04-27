@@ -15,6 +15,7 @@ import Footer from '@/components/footer'
 import CartDrawer from '@/components/cart-drawer'
 import CheckoutModal from '@/components/checkout-modal'
 import ProductDetail from '@/components/product-detail'
+import FloatingFruits from '@/components/floating-fruits'
 
 const pageVariants = {
   initial: { opacity: 0, y: 8 },
@@ -47,14 +48,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col relative">
-      {/* Background logo watermark */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <img
-          src="/dbites-logo.png"
-          alt=""
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[800px] h-auto object-contain opacity-[0.025] select-none"
-        />
-      </div>
+      {/* Global subtle 3D floating fruits background */}
+      <FloatingFruits variant="full" />
 
       <div className="relative z-10 flex flex-col min-h-screen">
       <Header />

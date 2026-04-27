@@ -4,7 +4,7 @@ import { useStore } from '@/lib/store'
 import ProductCard from './product-card'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
 
 export default function FeaturedProducts() {
   const { products } = useStore()
@@ -12,27 +12,32 @@ export default function FeaturedProducts() {
   const { setCurrentView } = useStore()
 
   return (
-    <section className="py-20 md:py-28 bg-muted/30 relative overflow-hidden">
-      {/* 3D floating fruits background */}
-      <div className="absolute inset-0 pointer-events-none" style={{ perspective: '1000px' }}>
-        <div className="absolute top-10 -left-8 animate-float3d-2">
-          <div className="fruit-3d w-20 h-20 rounded-full overflow-hidden opacity-15 fruit-3d-shine">
-            <img src="/products/mango.png" alt="" className="w-full h-full object-cover" />
+    <section className="py-20 md:py-28 bg-tropical-gradient relative overflow-hidden">
+      {/* Prominent 3D floating fruits */}
+      <div className="absolute inset-0 pointer-events-none" style={{ perspective: '1200px' }}>
+        <div className="absolute -top-8 -left-10 animate-drift-slow">
+          <div className="fruit-3d-prominent w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden opacity-30 fruit-3d-shine">
+            <img src="/products/3d-mango.png" alt="" className="w-full h-full object-contain p-3" />
           </div>
         </div>
-        <div className="absolute bottom-10 -right-6 animate-float3d-1">
-          <div className="fruit-3d w-24 h-24 rounded-full overflow-hidden opacity-15 fruit-3d-shine">
-            <img src="/products/berries.png" alt="" className="w-full h-full object-cover" />
+        <div className="absolute -bottom-8 -right-10 animate-drift-medium">
+          <div className="fruit-3d-prominent w-36 h-36 md:w-52 md:h-52 rounded-full overflow-hidden opacity-25 fruit-3d-shine">
+            <img src="/products/3d-lemon.png" alt="" className="w-full h-full object-contain p-3" />
           </div>
         </div>
-        <div className="absolute top-1/2 right-[3%] animate-float3d-3 hidden lg:block">
-          <div className="fruit-3d w-14 h-14 rounded-full overflow-hidden opacity-20 fruit-3d-shine border border-white/50">
-            <img src="/products/apple.png" alt="" className="w-full h-full object-cover" />
+        <div className="absolute top-1/3 right-[2%] animate-float3d-3 hidden lg:block">
+          <div className="fruit-3d w-22 h-22 rounded-full overflow-hidden opacity-35 fruit-3d-shine border border-white/50">
+            <img src="/products/3d-lime.png" alt="" className="w-full h-full object-contain p-2" />
           </div>
         </div>
-        <div className="absolute bottom-[20%] left-[5%] animate-float3d-spin hidden md:block">
-          <div className="fruit-3d w-12 h-12 rounded-full overflow-hidden opacity-15 fruit-3d-shine border border-white/40">
-            <img src="/products/kiwi.png" alt="" className="w-full h-full object-cover" />
+        <div className="absolute bottom-1/4 left-[3%] animate-float3d-2 hidden md:block">
+          <div className="fruit-3d w-16 h-16 rounded-full overflow-hidden opacity-30 fruit-3d-shine border border-white/40">
+            <img src="/products/3d-pineapple.png" alt="" className="w-full h-full object-contain p-2" />
+          </div>
+        </div>
+        <div className="absolute top-[10%] right-[25%] animate-splash-bounce hidden xl:block">
+          <div className="fruit-3d w-14 h-14 rounded-full overflow-hidden opacity-25 fruit-3d-shine border border-white/40">
+            <img src="/products/3d-passionfruit.png" alt="" className="w-full h-full object-contain p-1" />
           </div>
         </div>
       </div>
@@ -40,21 +45,22 @@ export default function FeaturedProducts() {
       <div className="relative container mx-auto px-4">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <span className="text-sm font-medium text-accent tracking-widest uppercase mb-3 block">
-            Customer Favorites
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-5">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-purple-100 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest mb-4">
+            <Sparkles className="h-3.5 w-3.5 text-purple-500" />
+            <span className="bg-gradient-to-r from-orange-600 to-purple-600 bg-clip-text text-transparent">Customer Favorites</span>
+          </div>
+          <h2 className="text-4xl md:text-6xl font-black mb-5">
             Our <span className="gradient-text">Bestsellers</span>
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          <p className="text-foreground/60 max-w-xl mx-auto leading-relaxed text-lg">
             Discover our most loved dehydrated fruits — each one carefully crafted
-            to deliver the purest flavor and finest texture.
+            to deliver the purest tropical flavor.
           </p>
         </motion.div>
 
@@ -67,23 +73,22 @@ export default function FeaturedProducts() {
 
         {featured.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-muted-foreground text-sm">Loading delicious products...</p>
+            <div className="w-12 h-12 border-3 border-orange-200 border-t-orange-500 rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-foreground/50 font-medium">Loading delicious products...</p>
           </div>
         )}
 
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center mt-14"
         >
           <Button
-            variant="outline"
             size="lg"
             onClick={() => setCurrentView('shop')}
-            className="px-8 py-5 text-sm border-primary/30 text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-xl"
+            className="px-10 py-6 text-sm bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg shadow-cyan-500/20 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300 rounded-2xl font-bold border-0"
           >
             View All Products
             <ArrowRight className="ml-2 h-4 w-4" />
