@@ -23,11 +23,26 @@ export default function Footer() {
 
       {/* Background logo watermark */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <img
-          src="/dbites-logo.png"
-          alt=""
-          className="w-[400px] h-auto object-contain opacity-[0.03] brightness-0 invert select-none"
-        />
+        <img src="/dbites-logo.png" alt="" className="w-[400px] h-auto object-contain opacity-[0.03] brightness-0 invert select-none" />
+      </div>
+
+      {/* 3D floating fruits in footer */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ perspective: '800px' }}>
+        <div className="absolute top-8 left-[5%] animate-float3d-1">
+          <div className="fruit-3d w-16 h-16 rounded-full overflow-hidden opacity-10">
+            <img src="/products/mango.png" alt="" className="w-full h-full object-cover" style={{ filter: 'brightness(0.3) saturate(0.5)' }} />
+          </div>
+        </div>
+        <div className="absolute bottom-8 right-[8%] animate-float3d-3">
+          <div className="fruit-3d w-14 h-14 rounded-full overflow-hidden opacity-10">
+            <img src="/products/berries.png" alt="" className="w-full h-full object-cover" style={{ filter: 'brightness(0.3) saturate(0.5)' }} />
+          </div>
+        </div>
+        <div className="absolute top-1/2 right-[2%] animate-float3d-2 hidden lg:block">
+          <div className="fruit-3d w-12 h-12 rounded-full overflow-hidden opacity-8">
+            <img src="/products/apple.png" alt="" className="w-full h-full object-cover" style={{ filter: 'brightness(0.3) saturate(0.5)' }} />
+          </div>
+        </div>
       </div>
 
       <div className="relative container mx-auto px-4 py-16">

@@ -12,7 +12,31 @@ export default function FeaturedProducts() {
   const { setCurrentView } = useStore()
 
   return (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+    <section className="py-20 md:py-28 bg-muted/30 relative overflow-hidden">
+      {/* 3D floating fruits background */}
+      <div className="absolute inset-0 pointer-events-none" style={{ perspective: '1000px' }}>
+        <div className="absolute top-10 -left-8 animate-float3d-2">
+          <div className="fruit-3d w-20 h-20 rounded-full overflow-hidden opacity-15 fruit-3d-shine">
+            <img src="/products/mango.png" alt="" className="w-full h-full object-cover" />
+          </div>
+        </div>
+        <div className="absolute bottom-10 -right-6 animate-float3d-1">
+          <div className="fruit-3d w-24 h-24 rounded-full overflow-hidden opacity-15 fruit-3d-shine">
+            <img src="/products/berries.png" alt="" className="w-full h-full object-cover" />
+          </div>
+        </div>
+        <div className="absolute top-1/2 right-[3%] animate-float3d-3 hidden lg:block">
+          <div className="fruit-3d w-14 h-14 rounded-full overflow-hidden opacity-20 fruit-3d-shine border border-white/50">
+            <img src="/products/apple.png" alt="" className="w-full h-full object-cover" />
+          </div>
+        </div>
+        <div className="absolute bottom-[20%] left-[5%] animate-float3d-spin hidden md:block">
+          <div className="fruit-3d w-12 h-12 rounded-full overflow-hidden opacity-15 fruit-3d-shine border border-white/40">
+            <img src="/products/kiwi.png" alt="" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      </div>
+
       <div className="relative container mx-auto px-4">
         {/* Section Header */}
         <motion.div

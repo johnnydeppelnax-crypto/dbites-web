@@ -45,31 +45,24 @@
 
 :root {
   --radius: 0.75rem;
-  /* Clean white base with warm undertone */
   --background: oklch(0.99 0.005 90);
   --foreground: oklch(0.20 0.03 50);
-  /* Card: pure clean white */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.20 0.03 50);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.20 0.03 50);
-  /* Primary: Deep Orange - nature's warmth */
   --primary: oklch(0.58 0.18 40);
   --primary-foreground: oklch(0.99 0.003 90);
-  /* Secondary: soft warm cream */
   --secondary: oklch(0.97 0.01 85);
   --secondary-foreground: oklch(0.25 0.04 50);
-  /* Muted: subtle warm gray */
   --muted: oklch(0.96 0.008 85);
   --muted-foreground: oklch(0.50 0.03 50);
-  /* Accent: Vibrant Green - organic life */
   --accent: oklch(0.55 0.17 150);
   --accent-foreground: oklch(0.99 0.003 90);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.93 0.006 85);
   --input: oklch(0.93 0.006 85);
   --ring: oklch(0.58 0.18 40);
-  /* Charts: organic palette */
   --chart-1: oklch(0.58 0.18 40);
   --chart-2: oklch(0.55 0.17 150);
   --chart-3: oklch(0.65 0.14 80);
@@ -128,35 +121,22 @@
   }
 }
 
-/* Clean minimal scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: oklch(0.80 0.06 50);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.58 0.18 40);
-}
-
-/* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
-/* Organic gradient text - deep orange to vibrant green */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: oklch(0.80 0.06 50); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.58 0.18 40); }
+
+/* ===== Gradient Text ===== */
 .gradient-text {
   background: linear-gradient(135deg, #EA580C 0%, #C2410C 40%, #16A34A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
-/* Organic gradient text - orange only */
 .gradient-text-warm {
   background: linear-gradient(135deg, #EA580C 0%, #F97316 50%, #D97706 100%);
   -webkit-background-clip: text;
@@ -164,87 +144,119 @@ html {
   background-clip: text;
 }
 
-/* Organic gradient text - green only */
-.gradient-text-green {
-  background: linear-gradient(135deg, #16A34A 0%, #22C55E 50%, #4ADE80 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ===== 3D Fruit System ===== */
+
+/* 3D floating - multi-axis with depth */
+@keyframes float3d-1 {
+  0%   { transform: translateY(0px) translateX(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+  25%  { transform: translateY(-18px) translateX(8px) rotateX(5deg) rotateY(8deg) rotateZ(3deg) scale(1.03); }
+  50%  { transform: translateY(-30px) translateX(-5px) rotateX(-3deg) rotateY(15deg) rotateZ(-2deg) scale(1.05); }
+  75%  { transform: translateY(-12px) translateX(10px) rotateX(4deg) rotateY(5deg) rotateZ(4deg) scale(1.02); }
+  100% { transform: translateY(0px) translateX(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+}
+@keyframes float3d-2 {
+  0%   { transform: translateY(0px) translateX(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  33%  { transform: translateY(-22px) translateX(-12px) rotateX(-8deg) rotateY(12deg) rotateZ(-4deg); }
+  66%  { transform: translateY(-10px) translateX(8px) rotateX(6deg) rotateY(-6deg) rotateZ(3deg); }
+  100% { transform: translateY(0px) translateX(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+}
+@keyframes float3d-3 {
+  0%   { transform: translateY(0px) rotateZ(0deg) rotateY(0deg); }
+  30%  { transform: translateY(-25px) rotateZ(5deg) rotateY(10deg); }
+  60%  { transform: translateY(-8px) rotateZ(-3deg) rotateY(-8deg); }
+  100% { transform: translateY(0px) rotateZ(0deg) rotateY(0deg); }
+}
+@keyframes float3d-spin {
+  0%   { transform: translateY(0px) rotateY(0deg) rotateX(0deg); }
+  25%  { transform: translateY(-15px) rotateY(90deg) rotateX(5deg); }
+  50%  { transform: translateY(-28px) rotateY(180deg) rotateX(0deg); }
+  75%  { transform: translateY(-12px) rotateY(270deg) rotateX(-5deg); }
+  100% { transform: translateY(0px) rotateY(360deg) rotateX(0deg); }
 }
 
-/* Gentle float animation */
-@keyframes gentle-float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
-.animate-gentle-float {
-  animation: gentle-float 6s ease-in-out infinite;
-}
-.animate-gentle-float-slow {
-  animation: gentle-float 8s ease-in-out infinite;
-}
-.animate-gentle-float-delayed {
-  animation: gentle-float 7s ease-in-out 2s infinite;
+.animate-float3d-1 { animation: float3d-1 8s ease-in-out infinite; transform-style: preserve-3d; }
+.animate-float3d-2 { animation: float3d-2 10s ease-in-out infinite; transform-style: preserve-3d; }
+.animate-float3d-3 { animation: float3d-3 7s ease-in-out infinite; transform-style: preserve-3d; }
+.animate-float3d-spin { animation: float3d-spin 12s ease-in-out infinite; transform-style: preserve-3d; }
+
+/* 3D perspective containers */
+.perspective-500 { perspective: 500px; }
+.perspective-800 { perspective: 800px; }
+.perspective-1200 { perspective: 1200px; }
+.perspective-2000 { perspective: 2000px; }
+
+/* 3D fruit element - base styling */
+.fruit-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.12)) drop-shadow(0 2px 6px rgba(0,0,0,0.08));
 }
 
-/* Organic reveal animation */
-@keyframes reveal-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* 3D ground shadow under fruits */
+.fruit-shadow {
+  position: relative;
+}
+.fruit-shadow::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 15%;
+  right: 15%;
+  height: 12px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(4px);
+  z-index: -1;
 }
 
-/* Soft organic pulse */
-@keyframes organic-pulse {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.02); }
+/* 3D fruit with shine/glare */
+.fruit-3d-shine {
+  position: relative;
+  overflow: hidden;
 }
-.animate-organic-pulse {
-  animation: organic-pulse 4s ease-in-out infinite;
+.fruit-3d-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0) 35%,
+    rgba(255,255,255,0.3) 45%,
+    rgba(255,255,255,0.5) 50%,
+    rgba(255,255,255,0.3) 55%,
+    rgba(255,255,255,0) 65%,
+    rgba(255,255,255,0) 100%
+  );
+  pointer-events: none;
+  transform: rotate(-30deg);
+  opacity: 0.6;
 }
 
-/* Leaf sway */
-@keyframes leaf-sway {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(2deg); }
-}
-.animate-leaf-sway {
-  animation: leaf-sway 3s ease-in-out infinite;
-}
-
-/* Image zoom on hover */
-.img-zoom {
-  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.img-zoom:hover {
-  transform: scale(1.05);
-}
-
-/* Clean card hover */
+/* Card hover with 3D depth */
 .card-lift {
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
 }
 .card-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(234, 88, 12, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(234, 88, 12, 0.12), 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* Organic shape clip */
+/* Parallax depth layering */
+.depth-near { transform: translateZ(40px) scale(1.05); }
+.depth-mid  { transform: translateZ(20px) scale(1.02); }
+.depth-far  { transform: translateZ(-20px) scale(0.95); opacity: 0.7; }
+
+/* Organic shape */
 .organic-shape {
   border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
 }
 
-/* Clean separator with organic feel */
+/* Organic divider */
 .organic-divider {
   height: 2px;
   background: linear-gradient(90deg, transparent, #EA580C33, #16A34A33, transparent);
-}
-
-/* Subtle texture overlay */
-.texture-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.03'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2l2 3.5-2 3z'/%3E%3C/g%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
 }
