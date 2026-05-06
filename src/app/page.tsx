@@ -12,10 +12,12 @@ import ProductCatalog from '@/components/product-catalog'
 import AboutSection from '@/components/about-section'
 import ContactSection from '@/components/contact-section'
 import AdminDashboard from '@/components/admin-dashboard'
+import AccountPage from '@/components/account-page'
 import Footer from '@/components/footer'
 import CartDrawer from '@/components/cart-drawer'
 import CheckoutModal from '@/components/checkout-modal'
 import ProductDetail from '@/components/product-detail'
+import LoginModal from '@/components/login-modal'
 import FloatingFruits from '@/components/floating-fruits'
 
 const pageVariants = {
@@ -25,8 +27,9 @@ const pageVariants = {
 }
 
 export default function Home() {
-  const { currentView, setProducts, products } = useStore()
+  const { currentView, setProducts, products, user, setUser, setAuthLoading, setUserOrders } = useStore()
   const isAdmin = currentView === 'admin'
+  const isAccount = currentView === 'account'
 
   // Fetch products on mount
   useEffect(() => {
@@ -45,6 +48,32 @@ export default function Home() {
     loadProducts()
   }, [setProducts])
 
+  // Check session on mount
+  useEffect(() => {
+    async function checkSession() {
+      try {
+        const res = await fetch('/api/auth/session')
+        if (res.ok) {
+          const data = await res.json()
+          if (data.user) {
+            setUser(data.user)
+            // Load user orders
+            const ordersRes = await fetch('/api/auth/me')
+            if (ordersRes.ok) {
+              const ordersData = await ordersRes.json()
+              setUserOrders(ordersData.orders)
+            }
+          }
+        }
+      } catch {
+        // silently fail
+      } finally {
+        setAuthLoading(false)
+      }
+    }
+    checkSession()
+  }, [setUser, setAuthLoading, setUserOrders])
+
   // Admin view has its own full-page layout
   if (isAdmin) {
     return (
@@ -54,6 +83,22 @@ export default function Home() {
         <CartDrawer />
         <CheckoutModal />
         <ProductDetail />
+        <LoginModal />
+      </div>
+    )
+  }
+
+  // Account view
+  if (isAccount) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <AccountPage />
+        <Footer />
+        <CartDrawer />
+        <CheckoutModal />
+        <ProductDetail />
+        <LoginModal />
       </div>
     )
   }
@@ -128,6 +173,7 @@ export default function Home() {
       <CartDrawer />
       <CheckoutModal />
       <ProductDetail />
+      <LoginModal />
       </div>
     </div>
   )

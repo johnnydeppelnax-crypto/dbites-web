@@ -1,10 +1,11 @@
 'use client'
 
 import { useStore } from '@/lib/store'
-import { ShoppingCart, Menu, X, Sun, LayoutDashboard } from 'lucide-react'
+import { ShoppingCart, Menu, X, Sun, LayoutDashboard, User, LogOut, Package, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { ViewType } from '@/lib/store'
+import { useState, useRef, useEffect } from 'react'
 
 const navItems: { label: string; view: ViewType }[] = [
   { label: 'Home', view: 'home' },
@@ -15,8 +16,36 @@ const navItems: { label: string; view: ViewType }[] = [
 ]
 
 export default function Header() {
-  const { currentView, setCurrentView, setCartOpen, getCartItemCount, mobileMenuOpen, setMobileMenuOpen } = useStore()
+  const {
+    currentView, setCurrentView, setCartOpen, getCartItemCount,
+    mobileMenuOpen, setMobileMenuOpen, user, setUser,
+    setLoginModalOpen, setUserOrders
+  } = useStore()
   const cartCount = getCartItemCount()
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const userMenuRef = useRef<HTMLDivElement>(null)
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+      setUser(null)
+      setUserOrders([])
+      setUserMenuOpen(false)
+    } catch {
+      // silently fail
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -57,6 +86,7 @@ export default function Header() {
 
         {/* Right side */}
         <div className="flex items-center gap-3">
+          {/* Cart button */}
           <Button
             variant="ghost"
             size="icon"
@@ -74,6 +104,85 @@ export default function Header() {
               </motion.span>
             )}
           </Button>
+
+          {/* User button */}
+          {user ? (
+            <div className="relative" ref={userMenuRef}>
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200/50 hover:shadow-md transition-all"
+              >
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <span className="hidden sm:block text-sm font-semibold text-foreground/70 max-w-[80px] truncate">
+                  {user.name.split(' ')[0]}
+                </span>
+                <ChevronDown className={`h-3 w-3 text-foreground/30 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {userMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl border border-orange-100 shadow-xl shadow-orange-500/5 overflow-hidden z-50"
+                  >
+                    {/* User info header */}
+                    <div className="px-4 py-3 bg-gradient-to-r from-orange-50 to-amber-50 border-b border-orange-100">
+                      <p className="font-bold text-sm text-foreground">{user.name}</p>
+                      <p className="text-xs text-foreground/40">{user.email}</p>
+                    </div>
+
+                    <div className="p-1.5">
+                      <button
+                        onClick={() => {
+                          setCurrentView('account')
+                          setUserMenuOpen(false)
+                        }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/60 hover:text-foreground hover:bg-orange-50 transition-colors"
+                      >
+                        <User className="h-4 w-4" />
+                        My Account
+                      </button>
+                      <button
+                        onClick={() => {
+                          setCurrentView('account')
+                          setUserMenuOpen(false)
+                          // Set to orders tab
+                          useStore.getState().setAdminTab('orders')
+                        }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/60 hover:text-foreground hover:bg-orange-50 transition-colors"
+                      >
+                        <Package className="h-4 w-4" />
+                        My Orders
+                      </button>
+                    </div>
+
+                    <div className="border-t border-orange-100 p-1.5">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <Button
+              onClick={() => setLoginModalOpen(true)}
+              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold rounded-xl shadow-md shadow-orange-500/20 px-5 h-9 text-sm"
+            >
+              <User className="h-4 w-4 mr-1.5" />
+              Sign In
+            </Button>
+          )}
 
           {/* Mobile menu toggle */}
           <Button
@@ -117,6 +226,45 @@ export default function Header() {
                   {item.label}
                 </motion.button>
               ))}
+
+              {/* Mobile user section */}
+              {user ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setCurrentView('account')
+                      setMobileMenuOpen(false)
+                    }}
+                    className="py-3.5 text-base font-semibold text-left text-orange-600 flex items-center gap-2 border-b border-orange-100/50"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    My Account
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleLogout()
+                      setMobileMenuOpen(false)
+                    }}
+                    className="py-3.5 text-base font-semibold text-left text-red-500 flex items-center gap-2"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    setLoginModalOpen(true)
+                    setMobileMenuOpen(false)
+                  }}
+                  className="py-3.5 text-base font-semibold text-left text-orange-600 flex items-center gap-2"
+                >
+                  <User className="h-4 w-4" />
+                  Sign In
+                </button>
+              )}
             </nav>
           </motion.div>
         )}

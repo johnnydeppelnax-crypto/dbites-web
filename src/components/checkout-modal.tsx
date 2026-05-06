@@ -6,12 +6,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { CheckCircle2, Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { CheckCircle2, Loader2, User } from 'lucide-react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 
 export default function CheckoutModal() {
-  const { checkoutOpen, setCheckoutOpen, cart, getCartTotal, clearCart, setOrderPlaced, orderPlaced, setOrderNumber, orderNumber } = useStore()
+  const { checkoutOpen, setCheckoutOpen, cart, getCartTotal, clearCart, setOrderPlaced, orderPlaced, setOrderNumber, orderNumber, user, setLoginModalOpen, setUserOrders } = useStore()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -22,6 +22,18 @@ export default function CheckoutModal() {
     state: '',
     zipCode: '',
   })
+
+  // Pre-fill form with user data if logged in
+  useEffect(() => {
+    if (user && checkoutOpen) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.name || prev.name,
+        email: user.email || prev.email,
+        phone: user.phone || prev.phone,
+      }))
+    }
+  }, [user, checkoutOpen])
 
   const total = getCartTotal()
   const tax = total * 0.08
@@ -38,11 +50,13 @@ export default function CheckoutModal() {
         body: JSON.stringify({
           ...formData,
           total: grandTotal,
+          userId: user?.id || null,
           items: cart.map((item) => ({
             productId: item.product.id,
             name: item.product.name,
             price: item.product.price,
             quantity: item.quantity,
+            image: item.product.image,
           })),
         }),
       })
@@ -54,6 +68,16 @@ export default function CheckoutModal() {
         setOrderPlaced(true)
         clearCart()
         toast.success('Order placed successfully!')
+        // Refresh user orders
+        if (user) {
+          try {
+            const ordersRes = await fetch('/api/auth/me')
+            if (ordersRes.ok) {
+              const ordersData = await ordersRes.json()
+              setUserOrders(ordersData.orders)
+            }
+          } catch { /* silent */ }
+        }
       } else {
         toast.error(data.error || 'Failed to place order')
       }
@@ -68,7 +92,9 @@ export default function CheckoutModal() {
     setCheckoutOpen(false)
     if (orderPlaced) {
       setOrderPlaced(false)
-      setFormData({ name: '', email: '', phone: '', address: '', city: '', state: '', zipCode: '' })
+      if (!user) {
+        setFormData({ name: '', email: '', phone: '', address: '', city: '', state: '', zipCode: '' })
+      }
     }
   }
 
@@ -100,6 +126,26 @@ export default function CheckoutModal() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Login prompt for guest users */}
+            {!user && (
+              <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-xl border border-orange-100">
+                <User className="h-5 w-5 text-orange-500 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs text-foreground/60">Have an account?</p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCheckoutOpen(false)
+                      setLoginModalOpen(true)
+                    }}
+                    className="text-sm font-bold text-orange-600 hover:text-orange-700"
+                  >
+                    Sign in for faster checkout
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm">Full Name *</Label>

@@ -29,3 +29,28 @@ Stage Summary:
 - All 12 product images regenerated with professional food photography style
 - All components rewritten for the new aesthetic
 - Website is live and rendering correctly
+---
+Task ID: 1
+Agent: Main Agent
+Task: Add customer login functionality to D-Bites e-commerce website
+
+Work Log:
+- Updated Prisma schema with User model (id, name, email, passwordHash, phone, avatar, role, timestamps)
+- Updated Order model with optional userId field and User relation
+- Installed bcryptjs for password hashing
+- Created auth API routes: /api/auth/register, /api/auth/login, /api/auth/logout, /api/auth/session, /api/auth/me
+- Updated Zustand store with auth state (user, loginModalOpen, userOrders, authLoading)
+- Created LoginModal component with login/register tabs, tropical gradient design, animated transitions
+- Created AccountPage component with Profile, Orders, Wishlist, Settings tabs
+- Updated Header component with user avatar dropdown (My Account, My Orders, Sign Out) or Sign In button
+- Updated CheckoutModal to pre-fill user data, show login prompt for guests, link orders to userId
+- Updated page.tsx with Account view, LoginModal, and session check on mount
+- Build verified successfully
+
+Stage Summary:
+- Full customer authentication system added (register, login, logout, session persistence via cookies)
+- Beautiful tropical-themed LoginModal with animated login/register tabs
+- Account page with profile info, order history, wishlist placeholder, and settings
+- Header now shows user avatar + dropdown when logged in, Sign In button when not
+- Checkout auto-fills user data and links orders to customer accounts
+- Session persistence via httpOnly cookies (7-day expiry)

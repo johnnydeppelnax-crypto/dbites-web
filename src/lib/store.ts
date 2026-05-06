@@ -21,7 +21,26 @@ export interface CartItem {
   quantity: number
 }
 
-type ViewType = 'home' | 'shop' | 'about' | 'contact' | 'admin'
+export interface User {
+  id: string
+  name: string
+  email: string
+  role: string
+  avatar: string | null
+  phone: string | null
+  createdAt: string
+}
+
+export interface UserOrder {
+  id: string
+  total: number
+  status: string
+  items: { name: string; price: number; quantity: number; image?: string }[]
+  createdAt: string
+  address: string
+}
+
+type ViewType = 'home' | 'shop' | 'about' | 'contact' | 'admin' | 'account'
 
 interface Store {
   currentView: ViewType
@@ -60,6 +79,16 @@ interface Store {
   // Admin
   adminTab: string
   setAdminTab: (tab: string) => void
+
+  // Auth
+  user: User | null
+  setUser: (user: User | null) => void
+  loginModalOpen: boolean
+  setLoginModalOpen: (open: boolean) => void
+  userOrders: UserOrder[]
+  setUserOrders: (orders: UserOrder[]) => void
+  authLoading: boolean
+  setAuthLoading: (loading: boolean) => void
 
   getCartTotal: () => number
   getCartItemCount: () => number
@@ -125,6 +154,16 @@ export const useStore = create<Store>((set, get) => ({
 
   adminTab: 'overview',
   setAdminTab: (tab) => set({ adminTab: tab }),
+
+  // Auth
+  user: null,
+  setUser: (user) => set({ user }),
+  loginModalOpen: false,
+  setLoginModalOpen: (open) => set({ loginModalOpen: open }),
+  userOrders: [],
+  setUserOrders: (orders) => set({ userOrders: orders }),
+  authLoading: true,
+  setAuthLoading: (loading) => set({ authLoading: loading }),
 
   getCartTotal: () => {
     return get().cart.reduce(
