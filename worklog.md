@@ -54,3 +54,28 @@ Stage Summary:
 - Header now shows user avatar + dropdown when logged in, Sign In button when not
 - Checkout auto-fills user data and links orders to customer accounts
 - Session persistence via httpOnly cookies (7-day expiry)
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Add all fruits to the D-Bites product catalog
+
+Work Log:
+- Generated 18 new AI product images (papaya, lime, lemon, watermelon, strawberry, blueberry, raspberry, cherry, cranberry, apricot, peach, grape, fig, plum, guava, tangerine, grapefruit, lychee, starfruit, persimmon, tropical-mix, cantaloupe, date, mango-chili, acai, jackfruit)
+- Expanded seed data from 12 products to 32 products across 6 categories
+- Added new "Mixes" category with Tropical Paradise Mix
+- Updated product-catalog.tsx to include Mixes category and color
+- Updated admin-dashboard.tsx to include Mixes category colors
+- Fixed d'Agen string quote issue in seed data
+- Build verified successfully
+
+Stage Summary:
+- Total products: 32 (was 12)
+- New categories: Mixes (6 total: Tropical, Berries, Citrus, Exotic, Classic, Mixes)
+- Tropical: 9 products (mango, pineapple, coconut, papaya, guava, jackfruit, lychee, starfruit, cantaloupe)
+- Berries: 7 products (medley, strawberry, blueberry, raspberry, cherry, cranberry, acai)
+- Citrus: 5 products (orange, lemon, lime, tangerine, grapefruit)
+- Exotic: 7 products (dragonfruit, kiwi, pomegranate, passionfruit, persimmon, mango-chili, watermelon)
+- Classic: 9 products (apple, banana, pear, apricot, peach, fig, plum, date, grape)
+- Mixes: 1 product (tropical paradise mix)
+- 18 new AI-generated product images added to /public/products/

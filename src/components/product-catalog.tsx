@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, X, SlidersHorizontal, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-const categories = ['All', 'Tropical', 'Berries', 'Citrus', 'Exotic', 'Classic']
+const categories = ['All', 'Tropical', 'Berries', 'Citrus', 'Exotic', 'Classic', 'Mixes']
 
 const categoryColors: Record<string, string> = {
   All: 'from-emerald-500 to-teal-500',
@@ -17,6 +17,7 @@ const categoryColors: Record<string, string> = {
   Citrus: 'from-yellow-500 to-orange-500',
   Exotic: 'from-purple-500 to-violet-500',
   Classic: 'from-emerald-500 to-green-500',
+  Mixes: 'from-cyan-500 to-blue-500',
 }
 
 export default function ProductCatalog() {

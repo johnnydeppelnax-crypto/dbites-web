@@ -50,6 +50,7 @@ const categoryColors: Record<string, string> = {
   Citrus: 'from-yellow-400 to-orange-400',
   Exotic: 'from-purple-400 to-violet-400',
   Classic: 'from-emerald-400 to-teal-400',
+  Mixes: 'from-cyan-400 to-blue-400',
 }
 
 const tabs = [
@@ -486,6 +487,7 @@ function ProductTable() {
     Citrus: 'from-yellow-500 to-orange-500',
     Exotic: 'from-purple-500 to-violet-500',
     Classic: 'from-emerald-500 to-teal-500',
+    Mixes: 'from-cyan-500 to-blue-500',
   }
 
   if (products.length === 0) {
