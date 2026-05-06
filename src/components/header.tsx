@@ -1,7 +1,7 @@
 'use client'
 
 import { useStore } from '@/lib/store'
-import { ShoppingCart, Menu, X, Sun } from 'lucide-react'
+import { ShoppingCart, Menu, X, Sun, LayoutDashboard } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { ViewType } from '@/lib/store'
@@ -11,6 +11,7 @@ const navItems: { label: string; view: ViewType }[] = [
   { label: 'Shop', view: 'shop' },
   { label: 'About', view: 'about' },
   { label: 'Contact', view: 'contact' },
+  { label: 'Admin', view: 'admin' },
 ]
 
 export default function Header() {
@@ -49,7 +50,7 @@ export default function Header() {
                   : 'text-foreground/60 hover:text-foreground hover:bg-white/50'
               }`}
             >
-              {item.label}
+              {item.view === 'admin' ? <LayoutDashboard className="h-3.5 w-3.5 mr-1" /> : null}{item.label}
             </button>
           ))}
         </nav>

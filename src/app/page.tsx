@@ -11,6 +11,7 @@ import WhyDBites from '@/components/why-dbites'
 import ProductCatalog from '@/components/product-catalog'
 import AboutSection from '@/components/about-section'
 import ContactSection from '@/components/contact-section'
+import AdminDashboard from '@/components/admin-dashboard'
 import Footer from '@/components/footer'
 import CartDrawer from '@/components/cart-drawer'
 import CheckoutModal from '@/components/checkout-modal'
@@ -25,15 +26,13 @@ const pageVariants = {
 
 export default function Home() {
   const { currentView, setProducts, products } = useStore()
+  const isAdmin = currentView === 'admin'
 
   // Fetch products on mount
   useEffect(() => {
     async function loadProducts() {
       try {
-        // Try to seed first
         await fetch('/api/seed', { method: 'POST' })
-
-        // Then fetch all products
         const res = await fetch('/api/products')
         if (res.ok) {
           const data = await res.json()
@@ -45,6 +44,19 @@ export default function Home() {
     }
     loadProducts()
   }, [setProducts])
+
+  // Admin view has its own full-page layout
+  if (isAdmin) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <AdminDashboard />
+        <CartDrawer />
+        <CheckoutModal />
+        <ProductDetail />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col relative">

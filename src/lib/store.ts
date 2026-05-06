@@ -21,7 +21,7 @@ export interface CartItem {
   quantity: number
 }
 
-type ViewType = 'home' | 'shop' | 'about' | 'contact'
+type ViewType = 'home' | 'shop' | 'about' | 'contact' | 'admin'
 
 interface Store {
   currentView: ViewType
@@ -56,6 +56,10 @@ interface Store {
 
   mobileMenuOpen: boolean
   setMobileMenuOpen: (open: boolean) => void
+
+  // Admin
+  adminTab: string
+  setAdminTab: (tab: string) => void
 
   getCartTotal: () => number
   getCartItemCount: () => number
@@ -118,6 +122,9 @@ export const useStore = create<Store>((set, get) => ({
 
   mobileMenuOpen: false,
   setMobileMenuOpen: (open) => set({ mobileMenuOpen: open }),
+
+  adminTab: 'overview',
+  setAdminTab: (tab) => set({ adminTab: tab }),
 
   getCartTotal: () => {
     return get().cart.reduce(
