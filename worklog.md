@@ -1,107 +1,115 @@
----
-Task ID: 1
-Agent: Main Agent
-Task: Complete redesign of D-Bites website with clean, minimalist, organic aesthetic
+# D-Bites Vercel Deployment Preparation — Work Log
 
-Work Log:
-- Analyzed existing project structure at /home/z/my-project
-- Found existing fruit images and emoji-based components from previous session
-- Generated 12 new high-quality AI dehydrated fruit product images (mango, apple, pineapple, berries, banana, orange, dragonfruit, kiwi, pear, pomegranate, coconut, passionfruit)
-- Generated hero banner image with assorted dried fruits
-- Rewrote globals.css with new nature-inspired color palette (deep orange primary, vibrant green accent, clean white base)
-- Redesigned Hero: Clean white background, organic soft shapes, large hero fruit image with gradient fade, floating fruit accents, green "100% Natural" badge
-- Redesigned Header: Minimal white/transparent nav, clean pill navigation, subtle cart badge
-- Redesigned ProductCard: Clean white cards, soft category colors, hover scale on images, minimal add-to-cart overlay
-- Redesigned FeaturedProducts: Clean section headers, orange-to-green gradient text
-- Redesigned WhyDBites: Clean feature cards with colored icons and soft borders
-- Redesigned AboutSection: Asymmetric layout with large product image, floating accent, stats overlay
-- Redesigned ContactSection: Clean form + contact info cards with colored icons
-- Redesigned Footer: Dark foreground background, organic gradient top line, clean layout
-- Redesigned ProductCatalog: Clean search/filter bar, minimal category pills
-- Redesigned ProductDetail: Texture-focused image panel, clean detail side
-- Redesigned CartDrawer: Minimal cart items with product images
-- Redesigned CheckoutModal: Clean form with organic color accents
-- Build successful, dev server running on port 3000
+## Date: 2025-01-01
 
-Stage Summary:
-- Complete visual redesign from 3D/dramatic to clean, minimalist, organic
-- Color palette: Deep orange (#EA580C primary), Vibrant green (#16A34A accent), Clean white base
-- All 12 product images regenerated with professional food photography style
-- All components rewritten for the new aesthetic
-- Website is live and rendering correctly
----
-Task ID: 1
-Agent: Main Agent
-Task: Add customer login functionality to D-Bites e-commerce website
+### Summary of Changes
 
-Work Log:
-- Updated Prisma schema with User model (id, name, email, passwordHash, phone, avatar, role, timestamps)
-- Updated Order model with optional userId field and User relation
-- Installed bcryptjs for password hashing
-- Created auth API routes: /api/auth/register, /api/auth/login, /api/auth/logout, /api/auth/session, /api/auth/me
-- Updated Zustand store with auth state (user, loginModalOpen, userOrders, authLoading)
-- Created LoginModal component with login/register tabs, tropical gradient design, animated transitions
-- Created AccountPage component with Profile, Orders, Wishlist, Settings tabs
-- Updated Header component with user avatar dropdown (My Account, My Orders, Sign Out) or Sign In button
-- Updated CheckoutModal to pre-fill user data, show login prompt for guests, link orders to userId
-- Updated page.tsx with Account view, LoginModal, and session check on mount
-- Build verified successfully
-
-Stage Summary:
-- Full customer authentication system added (register, login, logout, session persistence via cookies)
-- Beautiful tropical-themed LoginModal with animated login/register tabs
-- Account page with profile info, order history, wishlist placeholder, and settings
-- Header now shows user avatar + dropdown when logged in, Sign In button when not
-- Checkout auto-fills user data and links orders to customer accounts
-- Session persistence via httpOnly cookies (7-day expiry)
+All changes were made to prepare the D-Bites e-commerce app for Vercel deployment with PostgreSQL and PWA support.
 
 ---
-Task ID: 2
-Agent: Main Agent
-Task: Add all fruits to the D-Bites product catalog
 
-Work Log:
-- Generated 18 new AI product images (papaya, lime, lemon, watermelon, strawberry, blueberry, raspberry, cherry, cranberry, apricot, peach, grape, fig, plum, guava, tangerine, grapefruit, lychee, starfruit, persimmon, tropical-mix, cantaloupe, date, mango-chili, acai, jackfruit)
-- Expanded seed data from 12 products to 32 products across 6 categories
-- Added new "Mixes" category with Tropical Paradise Mix
-- Updated product-catalog.tsx to include Mixes category and color
-- Updated admin-dashboard.tsx to include Mixes category colors
-- Fixed d'Agen string quote issue in seed data
-- Build verified successfully
+### 1. Prisma: SQLite → PostgreSQL
+- **File**: `prisma/schema.prisma`
+- Changed `provider = "sqlite"` to `provider = "postgresql"`
+- Created migration SQL file at `prisma/migrations/20250101000000_init/migration.sql`
+- Migration includes CREATE TABLE statements for User, Product, and Order models with proper PostgreSQL types (TIMESTAMP, DOUBLE PRECISION, etc.)
 
-Stage Summary:
-- Total products: 32 (was 12)
-- New categories: Mixes (6 total: Tropical, Berries, Citrus, Exotic, Classic, Mixes)
-- Tropical: 9 products (mango, pineapple, coconut, papaya, guava, jackfruit, lychee, starfruit, cantaloupe)
-- Berries: 7 products (medley, strawberry, blueberry, raspberry, cherry, cranberry, acai)
-- Citrus: 5 products (orange, lemon, lime, tangerine, grapefruit)
-- Exotic: 7 products (dragonfruit, kiwi, pomegranate, passionfruit, persimmon, mango-chili, watermelon)
-- Classic: 9 products (apple, banana, pear, apricot, peach, fig, plum, date, grape)
-- Mixes: 1 product (tropical paradise mix)
-- 18 new AI-generated product images added to /public/products/
+### 2. Updated db.ts Logging
+- **File**: `src/lib/db.ts`
+- Changed from `log: ['query']` to `log: process.env.NODE_ENV === 'development' ? ['query'] : ['error']`
+- Reduces verbose query logging in production
 
----
-Task ID: 3
-Agent: Main Agent
-Task: Make the D-Bites application fully responsive for mobile and desktop
+### 3. Removed `output: "standalone"` from next.config.ts
+- **File**: `next.config.ts`
+- Removed `output: "standalone"` since Vercel handles builds natively
+- Kept `typescript.ignoreBuildErrors` and `reactStrictMode: false`
 
-Work Log:
-- Updated globals.css with mobile-first improvements: reduced animation intensity, disabled heavy 3D shadows, disabled card-lift 3D on mobile, added overflow-x:hidden, added -webkit-tap-highlight-color:transparent
-- Fixed Hero section: smaller text sizes (text-4xl→text-2xl/3xl on mobile), responsive padding, responsive trust indicators, smaller fruit decorations on mobile, safer positioning to avoid overflow
-- Fixed ProductCard: added mobile floating "+" add button (always visible on mobile), responsive font sizes, responsive badge sizes, lazy loading images, added Mixes category color
-- Fixed ProductDetail modal: full-screen on mobile (rounded-none, inset-0), responsive padding/font, max-h-[100dvh] for mobile, max-height image area on mobile, line-clamp description on mobile
-- Fixed About section: hidden overlapping floating fruits on small screens (hidden sm:block), repositioned stats overlay for mobile, reduced negative offsets
-- Fixed CheckoutModal: full-screen on mobile (rounded-none, inset-0, max-h-[100dvh])
-- Fixed LoginModal: full-screen on mobile (rounded-none, inset-0, max-h-[100dvh])
-- Fixed AccountPage: horizontal scrollable tab bar on mobile, responsive user header, icon-only tabs on small mobile
-- Fixed AdminDashboard: responsive tabs (full-width on mobile), responsive header/stats/padding, smaller stat cards on mobile
-- Fixed ProductCatalog: 2-column grid on mobile (grid-cols-2), smaller filter bar, smaller category pills
-- Fixed FeaturedProducts: 2-column grid on mobile
-- Build verified successfully
+### 4. Updated package.json Scripts
+- **File**: `package.json`
+- Changed `build` script from standalone-focused to `prisma generate && next build`
+- Changed `start` script from standalone server to `next start`
+- Added `postinstall: "prisma generate"` for automatic client generation
+- Added `vercel-build: "prisma migrate deploy && next build"` for Vercel
 
-Stage Summary:
-- All components now responsive from 320px mobile to 4K desktop
-- Mobile-first approach: touch-friendly buttons, proper tap targets, no hover-only interactions
-- Performance: reduced 3D animations on mobile, lazy loaded images
-- Full-screen modals on mobile for better UX
-- 2-column product grid on mobile for better visual density
+### 5. Installed pg Package
+- Ran `bun add pg` — installed pg@8.20.0
+
+### 6. Created PWA Manifest
+- **File**: `public/manifest.json`
+- Name: "D-Bites - Premium Dehydrated Fruits"
+- Short name: "D-Bites"
+- Theme color: #F97316 (orange)
+- Display: standalone
+- Icon: /dbites-logo.png
+
+### 7. Created Service Worker
+- **File**: `public/sw.js`
+- Cache-first strategy for static assets
+- Stale-while-revalidate for fetch requests
+- Auto-cleanup of old caches on activate
+
+### 8. Updated Root Layout for PWA
+- **File**: `src/app/layout.tsx`
+- Added `Viewport` export with themeColor, width, initialScale, maximumScale
+- Added `manifest: "/manifest.json"` to metadata
+- Added apple touch icon and apple-web-app meta tags
+- Added `<link rel="apple-touch-icon">` in head
+
+### 9. Registered Service Worker
+- **File**: `src/app/page.tsx`
+- Added useEffect to register `/sw.js` service worker on mount
+
+### 10. Deleted Old SQLite Database
+- Removed `db/custom.db`
+- Removed `db/` directory
+
+### 11. Updated .env
+- **File**: `.env`
+- Changed from SQLite URL to PostgreSQL placeholder URL
+- Created `.env.example` with examples for both local and Vercel environments
+
+### 12. Created DEPLOY.md
+- **File**: `DEPLOY.md`
+- Step-by-step Vercel deployment guide
+- Covers GitHub setup, Vercel Postgres, environment variables, PWA installation, custom domains
+
+### 13. Fixed Grid Redundancy
+- **File**: `src/components/product-catalog.tsx`
+- Changed `grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4` → `grid-cols-2 sm:grid-cols-3 lg:grid-cols-4`
+- **File**: `src/components/featured-products.tsx`
+- Changed `grid-cols-2 sm:grid-cols-2 lg:grid-cols-4` → `grid-cols-2 sm:grid-cols-4`
+
+### 14. Fixed Pre-existing Lint Errors
+- **File**: `src/components/account-page.tsx`
+- Moved `loadOrders` function declaration before the useEffect that references it
+- **File**: `src/components/admin-dashboard.tsx`
+- Wrapped `loadStats` in `useCallback` for stable reference
+- Restructured useEffect to use async init pattern with cancellation guard
+- Added `useCallback` import
+
+### Lint Status
+✅ All ESLint errors resolved — `bun run lint` passes cleanly
+
+### Files Modified
+1. `prisma/schema.prisma` — SQLite → PostgreSQL
+2. `src/lib/db.ts` — Conditional logging
+3. `next.config.ts` — Removed standalone output
+4. `package.json` — Updated scripts
+5. `src/app/layout.tsx` — PWA metadata
+6. `src/app/page.tsx` — Service worker registration
+7. `src/components/product-catalog.tsx` — Grid fix
+8. `src/components/featured-products.tsx` — Grid fix
+9. `src/components/account-page.tsx` — Lint fix
+10. `src/components/admin-dashboard.tsx` — Lint fix
+11. `.env` — PostgreSQL URL
+
+### Files Created
+1. `public/manifest.json` — PWA manifest
+2. `public/sw.js` — Service worker
+3. `prisma/migrations/20250101000000_init/migration.sql` — Initial migration
+4. `.env.example` — Environment variable template
+5. `DEPLOY.md` — Deployment guide
+
+### Files Deleted
+1. `db/custom.db` — Old SQLite database
+2. `db/` directory

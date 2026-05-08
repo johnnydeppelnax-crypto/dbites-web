@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
@@ -12,6 +12,13 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#F97316",
+};
 
 export const metadata: Metadata = {
   title: "D-Bites | Premium Dehydrated Fruits & Tropical Snacks",
@@ -28,8 +35,15 @@ export const metadata: Metadata = {
     "tropical fruits",
   ],
   authors: [{ name: "D-Bites" }],
+  manifest: "/manifest.json",
   icons: {
     icon: "/dbites-logo.png",
+    apple: "/dbites-logo.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "D-Bites",
   },
   openGraph: {
     title: "D-Bites | Taste The Tropical Sunshine",
@@ -46,6 +60,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="apple-touch-icon" href="/dbites-logo.png" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

@@ -74,6 +74,15 @@ export default function Home() {
     checkSession()
   }, [setUser, setAuthLoading, setUserOrders])
 
+  // Register service worker for PWA
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {
+        // SW registration failed, app still works
+      })
+    }
+  }, [])
+
   // Admin view has its own full-page layout
   if (isAdmin) {
     return (

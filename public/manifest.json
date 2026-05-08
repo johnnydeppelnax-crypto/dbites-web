@@ -1,0 +1,21 @@
+{
+  "name": "D-Bites - Premium Dehydrated Fruits",
+  "short_name": "D-Bites",
+  "description": "Premium dehydrated fruits bursting with tropical flavor. From our mobile lounge to your hands — every bite is a vacation for your taste buds.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#F97316",
+  "orientation": "portrait-primary",
+  "categories": ["food", "shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "/dbites-logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

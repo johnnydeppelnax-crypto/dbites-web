@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const loadStats = async () => {
+  const loadStats = useCallback(async () => {
     setLoading(true)
     try {
       // Seed demo orders first
@@ -78,9 +78,17 @@ export default function AdminDashboard() {
       console.error('Failed to load admin stats:', err)
     }
     setLoading(false)
-  }
+  }, [])
 
-  useEffect(() => { loadStats() }, [])
+  useEffect(() => {
+    let cancelled = false
+    const init = async () => {
+      if (cancelled) return
+      await loadStats()
+    }
+    init()
+    return () => { cancelled = true }
+  }, [loadStats])
 
   if (loading || !stats) {
     return (

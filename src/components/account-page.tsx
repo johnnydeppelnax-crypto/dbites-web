@@ -36,13 +36,6 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(false)
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null)
 
-  // Load user orders
-  useEffect(() => {
-    if (user) {
-      loadOrders()
-    }
-  }, [user])
-
   const loadOrders = async () => {
     try {
       const res = await fetch('/api/auth/me')
@@ -54,6 +47,13 @@ export default function AccountPage() {
       // silently fail
     }
   }
+
+  // Load user orders
+  useEffect(() => {
+    if (user) {
+      loadOrders()
+    }
+  }, [user])
 
   const handleLogout = async () => {
     try {
