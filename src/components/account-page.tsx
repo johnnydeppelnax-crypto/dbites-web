@@ -135,22 +135,22 @@ export default function AccountPage() {
         </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Sidebar */}
+          {/* Sidebar - horizontal on mobile, vertical on desktop */}
           <div className="lg:w-64 shrink-0">
             <Card className="bg-white/80 backdrop-blur-sm border-orange-100/50 rounded-2xl overflow-hidden">
-              <CardContent className="p-2">
+              <CardContent className="p-2 flex lg:flex-col gap-1 overflow-x-auto">
                 {accountTabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    className={`flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-xl text-xs lg:text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
                       activeTab === tab.id
                         ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md shadow-orange-500/20'
                         : 'text-foreground/50 hover:text-foreground hover:bg-orange-50/50'
                     }`}
                   >
                     <tab.icon className="h-4 w-4" />
-                    {tab.label}
+                    <span className="hidden sm:inline lg:inline">{tab.label}</span>
                   </button>
                 ))}
               </CardContent>

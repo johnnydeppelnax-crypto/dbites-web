@@ -77,10 +77,10 @@ export default function ProductCatalog() {
           <p className="text-foreground/60 max-w-xl mx-auto leading-relaxed text-lg">From tropical delights to classic favorites, there is a perfect bite for every palate.</p>
         </motion.div>
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-8 p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-orange-200/30 shadow-sm">
-          <div className="relative flex-1 max-w-sm">
+        <div className="flex flex-col sm:flex-row gap-3 mb-6 sm:mb-8 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/70 backdrop-blur-sm border border-orange-200/30 shadow-sm">
+          <div className="relative flex-1 max-w-full sm:max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-400" />
-            <Input placeholder="Search delicious fruits..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9 border-orange-200/50 focus:border-orange-400 bg-white/80" />
+            <Input placeholder="Search delicious fruits..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9 border-orange-200/50 focus:border-orange-400 bg-white/80 h-10" />
             {searchQuery && (
               <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
                 <X className="h-4 w-4 text-foreground/40 hover:text-foreground transition-colors" />
@@ -88,7 +88,7 @@ export default function ProductCatalog() {
             )}
           </div>
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-full sm:w-[180px] border-orange-200/50 bg-white/80">
+            <SelectTrigger className="w-full sm:w-[180px] border-orange-200/50 bg-white/80 h-10">
               <SlidersHorizontal className="h-4 w-4 mr-2 text-orange-400" />
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
@@ -102,14 +102,14 @@ export default function ProductCatalog() {
           </Select>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-10">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-8 sm:mb-10">
           {categories.map((cat) => (
             <Button 
               key={cat} 
               variant={selectedCategory === cat ? 'default' : 'outline'} 
               size="sm" 
               onClick={() => setSelectedCategory(cat)} 
-              className={`rounded-full px-5 transition-all duration-300 text-sm font-bold border-0 ${
+              className={`rounded-full px-3 sm:px-5 transition-all duration-300 text-xs sm:text-sm font-bold border-0 h-8 sm:h-9 ${
                 selectedCategory === cat 
                   ? `bg-gradient-to-r ${categoryColors[cat]} text-white shadow-md` 
                   : 'bg-white/60 backdrop-blur-sm text-foreground/60 hover:text-foreground hover:bg-white/80'
@@ -121,7 +121,7 @@ export default function ProductCatalog() {
         </div>
 
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {filtered.map((product, i) => (
               <ProductCard key={product.id} product={product} index={i} />
             ))}

@@ -114,7 +114,7 @@ export default function LoginModal() {
 
   return (
     <Dialog open={loginModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden rounded-3xl border-0">
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden rounded-none sm:rounded-3xl border-0 inset-0 sm:inset-auto w-full sm:w-auto max-h-[100dvh] sm:max-h-[90vh] overflow-y-auto">
         {/* Tropical gradient background */}
         <div className="relative">
           {/* Decorative top section */}

@@ -104,14 +104,14 @@ export default function AdminDashboard() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative container mx-auto px-4 py-8">
+      <div className="relative container mx-auto px-3 sm:px-4 py-4 sm:py-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-8">
           <div>
-            <h1 className="text-3xl md:text-4xl font-black text-white mb-1">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1">
               D-Bites <span className="bg-gradient-to-r from-orange-400 to-cyan-400 bg-clip-text text-transparent">Dashboard</span>
             </h1>
-            <p className="text-white/40 text-sm">Real-time business analytics and management</p>
+            <p className="text-white/40 text-xs sm:text-sm">Real-time business analytics and management</p>
           </div>
           <Button
             onClick={loadStats}
@@ -124,18 +124,18 @@ export default function AdminDashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8 bg-white/5 rounded-2xl p-1.5 w-fit">
+        <div className="flex gap-1 sm:gap-2 mb-6 sm:mb-8 bg-white/5 rounded-xl sm:rounded-2xl p-1 sm:p-1.5 w-full sm:w-fit overflow-x-auto">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setAdminTab(tab.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
                 adminTab === tab.id
                   ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/25'
                   : 'text-white/40 hover:text-white/70 hover:bg-white/5'
               }`}
             >
-              <tab.icon className="h-4 w-4" />
+              <tab.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               {tab.label}
             </button>
           ))}
@@ -461,18 +461,18 @@ function StatCard({ title, value, icon: Icon, gradient, trend, trendUp }: {
       transition={{ duration: 0.4 }}
     >
       <Card className="bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/8 transition-colors group">
-        <CardContent className="p-5">
-          <div className="flex items-start justify-between mb-3">
-            <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg`}>
-              <Icon className="h-5 w-5 text-white" />
+        <CardContent className="p-3 sm:p-5">
+          <div className="flex items-start justify-between mb-2 sm:mb-3">
+            <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg`}>
+              <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
-            <div className={`flex items-center gap-1 text-xs font-bold ${trendUp ? 'text-emerald-400' : 'text-amber-400'}`}>
+            <div className={`flex items-center gap-1 text-[10px] sm:text-xs font-bold ${trendUp ? 'text-emerald-400' : 'text-amber-400'}`}>
               {trendUp ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
               {trend}
             </div>
           </div>
-          <p className="text-2xl font-black text-white mb-0.5">{value}</p>
-          <p className="text-xs text-white/30 font-medium">{title}</p>
+          <p className="text-lg sm:text-2xl font-black text-white mb-0.5">{value}</p>
+          <p className="text-[10px] sm:text-xs text-white/30 font-medium">{title}</p>
         </CardContent>
       </Card>
     </motion.div>

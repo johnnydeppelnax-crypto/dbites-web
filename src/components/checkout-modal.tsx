@@ -100,7 +100,7 @@ export default function CheckoutModal() {
 
   return (
     <Dialog open={checkoutOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl">
+      <DialogContent className="sm:max-w-lg max-h-[100dvh] sm:max-h-[90vh] overflow-y-auto rounded-none sm:rounded-2xl inset-0 sm:inset-auto w-full sm:w-auto">
         <DialogHeader>
           <DialogTitle className="text-lg">
             {orderPlaced ? 'Order Confirmed!' : 'Checkout'}
