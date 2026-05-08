@@ -52,3 +52,10 @@ prompt
 server.log
 # Skills directory
 /skills/
+# Deployment artifacts
+/download/
+/upload/
+/skills/
+/examples/
+*.tar.gz
+*.zip
