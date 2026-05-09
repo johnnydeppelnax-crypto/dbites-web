@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export interface Product {
   id: string
@@ -94,7 +95,9 @@ interface Store {
   getCartItemCount: () => number
 }
 
-export const useStore = create<Store>((set, get) => ({
+export const useStore = create<Store>()(
+  persist(
+    (set, get) => ({
   currentView: 'home',
   setCurrentView: (view) => set({ currentView: view }),
 
@@ -174,4 +177,12 @@ export const useStore = create<Store>((set, get) => ({
   getCartItemCount: () => {
     return get().cart.reduce((count, item) => count + item.quantity, 0)
   },
-}))
+}),
+    {
+      name: 'dbites-store',
+      partialize: (state) => ({
+        cart: state.cart,
+      }),
+    }
+  )
+)

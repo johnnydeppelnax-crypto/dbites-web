@@ -4,7 +4,7 @@ import { useStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription } from '@/components/ui/dialog'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -115,6 +115,7 @@ export default function LoginModal() {
   return (
     <Dialog open={loginModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md p-0 overflow-hidden rounded-none sm:rounded-3xl border-0 inset-0 sm:inset-auto w-full sm:w-auto max-h-[100dvh] sm:max-h-[90vh] overflow-y-auto">
+        <DialogDescription className="sr-only">Sign in or create an account for D-Bites</DialogDescription>
         {/* Tropical gradient background */}
         <div className="relative">
           {/* Decorative top section */}

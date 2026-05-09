@@ -67,8 +67,6 @@ export default function AdminDashboard() {
   const loadStats = useCallback(async () => {
     setLoading(true)
     try {
-      // Seed demo orders first
-      await fetch('/api/admin/seed-orders', { method: 'POST' })
       const res = await fetch('/api/admin/stats')
       if (res.ok) {
         const data = await res.json()
@@ -84,7 +82,17 @@ export default function AdminDashboard() {
     let cancelled = false
     const init = async () => {
       if (cancelled) return
-      await loadStats()
+      // Only seed demo orders if there are no orders yet
+      try {
+        const checkRes = await fetch('/api/admin/stats')
+        if (checkRes.ok) {
+          const checkData = await checkRes.json()
+          if (checkData.totalOrders === 0) {
+            await fetch('/api/admin/seed-orders', { method: 'POST' })
+          }
+        }
+      } catch { /* silent */ }
+      if (!cancelled) await loadStats()
     }
     init()
     return () => { cancelled = true }

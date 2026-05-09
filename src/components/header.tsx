@@ -151,8 +151,6 @@ export default function Header() {
                         onClick={() => {
                           setCurrentView('account')
                           setUserMenuOpen(false)
-                          // Set to orders tab
-                          useStore.getState().setAdminTab('orders')
                         }}
                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/60 hover:text-foreground hover:bg-orange-50 transition-colors"
                       >

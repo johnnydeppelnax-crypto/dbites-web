@@ -1,7 +1,7 @@
 'use client'
 
 import { useStore, type Product } from '@/lib/store'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -41,6 +41,7 @@ export default function ProductDetail() {
   return (
     <Dialog open={!!selectedProduct} onOpenChange={() => { setSelectedProduct(null); setQuantity(1) }}>
       <DialogContent className="sm:max-w-3xl max-h-[100dvh] sm:max-h-[90vh] overflow-y-auto p-0 border-0 shadow-xl rounded-2xl sm:rounded-2xl rounded-none inset-0 sm:inset-auto w-full sm:w-auto">
+        <DialogDescription className="sr-only">Product details for {selectedProduct.name}</DialogDescription>
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Product Image */}
           <div className="aspect-square md:aspect-auto max-h-[40vh] md:max-h-none relative overflow-hidden bg-stone-50">

@@ -72,8 +72,8 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             </span>
           </div>
 
-          {/* Quick add - visible on mobile (always), hover on desktop */}
-          <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3 translate-y-full group-hover:translate-y-0 md:translate-y-full transition-transform duration-300">
+          {/* Quick add - always visible on mobile, hover on desktop */}
+          <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
             <Button
               className="w-full bg-white/95 backdrop-blur-sm text-foreground hover:bg-white shadow-lg border border-orange-200/30 rounded-xl font-semibold text-xs sm:text-sm h-9 sm:h-10"
               onClick={handleAddToCart}
@@ -84,11 +84,11 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             </Button>
           </div>
 
-          {/* Mobile: floating add button always visible */}
-          <div className="absolute bottom-2 right-2 md:hidden">
+          {/* Persistent add-to-cart button (always visible on all screen sizes) */}
+          <div className="absolute bottom-2 right-2">
             <Button
               size="icon"
-              className="h-9 w-9 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/30 border-0"
+              className="h-9 w-9 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/30 border-0 hover:scale-110 transition-transform"
               onClick={handleAddToCart}
               disabled={!product.inStock}
             >
