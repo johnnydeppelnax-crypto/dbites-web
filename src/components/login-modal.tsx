@@ -4,14 +4,14 @@ import { useStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Dialog, DialogContent, DialogDescription } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, Mail, Lock, User, ArrowRight, Sparkles } from 'lucide-react'
 
 export default function LoginModal() {
-  const { loginModalOpen, setLoginModalOpen, setUser, setCurrentView, setUserOrders } = useStore()
+  const { loginModalOpen, setLoginModalOpen, setUser, setUserOrders } = useStore()
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [loading, setLoading] = useState(false)
   const [loginData, setLoginData] = useState({ email: '', password: '' })
@@ -36,7 +36,6 @@ export default function LoginModal() {
         setLoginModalOpen(false)
         setLoginData({ email: '', password: '' })
         toast.success(`Welcome back, ${data.user.name}!`)
-        // Load user orders
         loadUserOrders()
       } else {
         toast.error(data.error || 'Login failed')
@@ -77,12 +76,13 @@ export default function LoginModal() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: registerData.email, password: registerData.password }),
         })
-        const loginData = await loginRes.json()
+        const loginResult = await loginRes.json()
         if (loginRes.ok) {
-          setUser(loginData.user)
+          setUser(loginResult.user)
           setLoginModalOpen(false)
           setRegisterData({ name: '', email: '', password: '', confirmPassword: '' })
-          toast.success(`Welcome to D-Bites, ${loginData.user.name}! 🎉`)
+          toast.success(`Welcome to D-Bites, ${loginResult.user.name}!`)
+          loadUserOrders()
         }
       } else {
         toast.error(data.error || 'Registration failed')
@@ -99,7 +99,7 @@ export default function LoginModal() {
       const res = await fetch('/api/auth/me')
       if (res.ok) {
         const data = await res.json()
-        setUserOrders(data.orders)
+        setUserOrders(data.orders || [])
       }
     } catch {
       // silently fail
@@ -114,8 +114,10 @@ export default function LoginModal() {
 
   return (
     <Dialog open={loginModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden rounded-none sm:rounded-3xl border-0 inset-0 sm:inset-auto w-full sm:w-auto max-h-[100dvh] sm:max-h-[90vh] overflow-y-auto">
-        <DialogDescription className="sr-only">Sign in or create an account for D-Bites</DialogDescription>
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden rounded-3xl border-0 max-h-[90vh] overflow-y-auto" showCloseButton={false}>
+        <DialogTitle className="sr-only">Sign in or create an account</DialogTitle>
+        <DialogDescription className="sr-only">Sign in to your D-Bites account or create a new one</DialogDescription>
+
         {/* Tropical gradient background */}
         <div className="relative">
           {/* Decorative top section */}
@@ -139,6 +141,15 @@ export default function LoginModal() {
               </p>
             </div>
           </div>
+
+          {/* Close button */}
+          <button
+            onClick={handleClose}
+            className="absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white/80 hover:text-white hover:bg-white/30 transition-all"
+            aria-label="Close"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
 
           {/* Mode toggle */}
           <div className="flex bg-orange-50 mx-6 -mt-4 relative z-20 rounded-xl p-1">
@@ -173,7 +184,7 @@ export default function LoginModal() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.25 }}
+                  transition={{ duration: 0.2 }}
                   onSubmit={handleLogin}
                   className="space-y-4"
                 >
@@ -221,6 +232,13 @@ export default function LoginModal() {
                     )}
                     {loading ? 'Signing In...' : 'Sign In'}
                   </Button>
+
+                  <p className="text-center text-xs text-foreground/40 mt-3">
+                    Don&apos;t have an account?{' '}
+                    <button type="button" onClick={() => setMode('register')} className="text-orange-500 font-semibold hover:underline">
+                      Create one
+                    </button>
+                  </p>
                 </motion.form>
               ) : (
                 <motion.form
@@ -228,7 +246,7 @@ export default function LoginModal() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.25 }}
+                  transition={{ duration: 0.2 }}
                   onSubmit={handleRegister}
                   className="space-y-4"
                 >
@@ -307,6 +325,13 @@ export default function LoginModal() {
                     )}
                     {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>
+
+                  <p className="text-center text-xs text-foreground/40 mt-3">
+                    Already have an account?{' '}
+                    <button type="button" onClick={() => setMode('login')} className="text-orange-500 font-semibold hover:underline">
+                      Sign in
+                    </button>
+                  </p>
                 </motion.form>
               )}
             </AnimatePresence>

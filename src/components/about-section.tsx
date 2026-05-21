@@ -10,40 +10,25 @@ export default function AboutSection() {
 
   return (
     <section className="py-12 sm:py-20 md:py-28 bg-tropical-cool relative overflow-hidden">
-      {/* Prominent 3D floating fruits */}
-      <div className="absolute inset-0 pointer-events-none" style={{ perspective: '1200px' }}>
-        <div className="absolute top-16 right-[8%] animate-drift-medium hidden sm:block">
-          <div className="fruit-3d-prominent w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden opacity-30 fruit-3d-shine border border-white/40">
-            <img src="/products/3d-pineapple.png" alt="" className="w-full h-full object-contain p-3" />
-          </div>
+      {/* Lightweight floating fruit accents */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-16 right-[8%] animate-float-gentle-2 hidden sm:block">
+          <span className="text-4xl md:text-6xl opacity-20 select-none" role="img" aria-label="pineapple">🍍</span>
         </div>
-        <div className="absolute bottom-20 left-[6%] animate-drift-slow hidden sm:block">
-          <div className="fruit-3d-prominent w-28 h-28 md:w-40 md:h-40 rounded-full overflow-hidden opacity-25 fruit-3d-shine">
-            <img src="/products/3d-orange.png" alt="" className="w-full h-full object-contain p-3" />
-          </div>
-        </div>
-        <div className="absolute top-1/2 -right-6 animate-float3d-spin hidden lg:block">
-          <div className="fruit-3d w-20 h-20 rounded-full overflow-hidden opacity-30 fruit-3d-shine border border-white/40">
-            <img src="/products/3d-passionfruit.png" alt="" className="w-full h-full object-contain p-2" />
-          </div>
-        </div>
-        <div className="absolute bottom-[30%] left-[1%] animate-float3d-2 hidden md:block">
-          <div className="fruit-3d w-16 h-16 rounded-full overflow-hidden opacity-25 fruit-3d-shine border border-white/40">
-            <img src="/products/3d-lemon.png" alt="" className="w-full h-full object-contain p-1" />
-          </div>
+        <div className="absolute bottom-20 left-[6%] animate-float-gentle-1 hidden sm:block">
+          <span className="text-3xl md:text-5xl opacity-18 select-none" role="img" aria-label="orange">🍊</span>
         </div>
       </div>
 
       <div className="relative container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-          {/* Image Side - with 3D floating fruit accents */}
+          {/* Image Side */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.5 }}
             className="relative"
-            style={{ perspective: '1000px' }}
           >
             <div className="relative max-w-md mx-auto lg:max-w-none">
               {/* Main image with tropical frame */}
@@ -52,51 +37,38 @@ export default function AboutSection() {
                   src="/products/mango.png"
                   alt="D-Bites Premium Dehydrated Mango"
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
 
-              {/* 3D floating accent image - top right (hidden on small mobile) */}
+              {/* Floating accent image - top right */}
               <motion.div
-                animate={{ y: [-8, 8, -8], rotateY: [0, 12, 0], rotateX: [0, -6, 0] }}
+                animate={{ y: [-6, 6, -6] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute -top-4 -right-4 sm:-top-8 sm:-right-8 hidden sm:block"
-                style={{ transformStyle: 'preserve-3d' }}
               >
-                <div className="fruit-3d-prominent fruit-shadow w-20 h-20 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shadow-xl border-2 sm:border-4 border-white">
-                  <img src="/products/3d-lemon.png" alt="Lemon" className="w-full h-full object-contain p-2" />
+                <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shadow-xl border-2 sm:border-4 border-white">
+                  <img src="/products/3d-lemon.png" alt="Lemon" className="w-full h-full object-contain p-2" loading="lazy" />
                 </div>
               </motion.div>
 
-              {/* 3D floating accent - bottom left (hidden on small mobile) */}
+              {/* Floating accent - bottom left */}
               <motion.div
-                animate={{ y: [5, -10, 5], rotateY: [0, -10, 0], rotateX: [0, 6, 0] }}
+                animate={{ y: [4, -8, 4] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 hidden sm:block"
-                style={{ transformStyle: 'preserve-3d' }}
               >
-                <div className="fruit-3d-prominent fruit-shadow w-16 h-16 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-xl border-2 sm:border-4 border-white">
-                  <img src="/products/3d-lime.png" alt="Lime" className="w-full h-full object-contain p-2" />
+                <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-xl border-2 sm:border-4 border-white">
+                  <img src="/products/3d-lime.png" alt="Lime" className="w-full h-full object-contain p-2" loading="lazy" />
                 </div>
               </motion.div>
 
-              {/* 3D spinning fruit - top left */}
-              <motion.div
-                animate={{ rotateY: [0, 360] }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                className="absolute top-1/4 -left-6 sm:-left-10 hidden lg:block"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className="fruit-3d w-16 h-16 rounded-full overflow-hidden opacity-80 border-2 border-white shadow-lg">
-                  <img src="/products/3d-orange.png" alt="Orange" className="w-full h-full object-contain p-1" />
-                </div>
-              </motion.div>
-
-              {/* Stats overlay - repositioned for mobile */}
+              {/* Stats overlay */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
                 className="absolute -bottom-3 -left-2 sm:-bottom-8 sm:-left-8 bg-white p-3 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl border border-cyan-100/50 z-10"
               >
                 <div className="flex items-center gap-2 sm:gap-3">
@@ -117,7 +89,7 @@ export default function AboutSection() {
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.5 }}
           >
             <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-purple-100 to-cyan-100 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
               <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-purple-500" />

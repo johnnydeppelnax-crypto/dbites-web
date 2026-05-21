@@ -13,42 +13,26 @@ export default function FeaturedProducts() {
 
   return (
     <section className="py-20 md:py-28 bg-tropical-gradient relative overflow-hidden">
-      {/* Prominent 3D floating fruits */}
-      <div className="absolute inset-0 pointer-events-none" style={{ perspective: '1200px' }}>
-        <div className="absolute -top-8 -left-10 animate-drift-slow">
-          <div className="fruit-3d-prominent w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden opacity-30 fruit-3d-shine">
-            <img src="/products/3d-mango.png" alt="" className="w-full h-full object-contain p-3" />
-          </div>
+      {/* Lightweight floating fruit accents */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-8 -left-10 animate-float-gentle-1">
+          <span className="text-4xl md:text-6xl opacity-18 select-none" role="img" aria-label="mango">🥭</span>
         </div>
-        <div className="absolute -bottom-8 -right-10 animate-drift-medium">
-          <div className="fruit-3d-prominent w-36 h-36 md:w-52 md:h-52 rounded-full overflow-hidden opacity-25 fruit-3d-shine">
-            <img src="/products/3d-lemon.png" alt="" className="w-full h-full object-contain p-3" />
-          </div>
+        <div className="absolute -bottom-8 -right-10 animate-float-gentle-2">
+          <span className="text-5xl md:text-7xl opacity-15 select-none" role="img" aria-label="lemon">🍋</span>
         </div>
-        <div className="absolute top-1/3 right-[2%] animate-float3d-3 hidden lg:block">
-          <div className="fruit-3d w-22 h-22 rounded-full overflow-hidden opacity-35 fruit-3d-shine border border-white/50">
-            <img src="/products/3d-lime.png" alt="" className="w-full h-full object-contain p-2" />
-          </div>
-        </div>
-        <div className="absolute bottom-1/4 left-[3%] animate-float3d-2 hidden md:block">
-          <div className="fruit-3d w-16 h-16 rounded-full overflow-hidden opacity-30 fruit-3d-shine border border-white/40">
-            <img src="/products/3d-pineapple.png" alt="" className="w-full h-full object-contain p-2" />
-          </div>
-        </div>
-        <div className="absolute top-[10%] right-[25%] animate-splash-bounce hidden xl:block">
-          <div className="fruit-3d w-14 h-14 rounded-full overflow-hidden opacity-25 fruit-3d-shine border border-white/40">
-            <img src="/products/3d-passionfruit.png" alt="" className="w-full h-full object-contain p-1" />
-          </div>
+        <div className="absolute top-1/3 right-[2%] animate-float-gentle-3 hidden lg:block">
+          <span className="text-3xl opacity-20 select-none" role="img" aria-label="lime">🍈</span>
         </div>
       </div>
 
       <div className="relative container mx-auto px-4">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-purple-100 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest mb-4">
@@ -82,7 +66,7 @@ export default function FeaturedProducts() {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
           className="text-center mt-14"
         >
           <Button

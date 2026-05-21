@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
+import bcrypt from 'bcryptjs'
 
 const products = [
   // ═══════════ TROPICAL ═══════════
@@ -555,6 +556,21 @@ export async function POST() {
     const result = await db.product.createMany({
       data: products,
     })
+
+    // Create default admin user if it doesn't exist
+    const adminEmail = 'admin@dbites.com'
+    const existingAdmin = await db.user.findUnique({ where: { email: adminEmail } })
+    if (!existingAdmin) {
+      const passwordHash = await bcrypt.hash('admin123', 12)
+      await db.user.create({
+        data: {
+          name: 'D-Bites Admin',
+          email: adminEmail,
+          passwordHash,
+          role: 'admin',
+        },
+      })
+    }
 
     return NextResponse.json({ message: 'Products re-seeded successfully', count: result.count })
   } catch (error) {

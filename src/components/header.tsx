@@ -1,19 +1,25 @@
 'use client'
 
 import { useStore } from '@/lib/store'
-import { ShoppingCart, Menu, X, Sun, LayoutDashboard, User, LogOut, Package, ChevronDown } from 'lucide-react'
+import { ShoppingCart, Menu, X, LayoutDashboard, User, LogOut, Package, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { ViewType } from '@/lib/store'
 import { useState, useRef, useEffect } from 'react'
 
-const navItems: { label: string; view: ViewType }[] = [
+// Public nav items — visible to everyone
+const publicNavItems: { label: string; view: ViewType }[] = [
   { label: 'Home', view: 'home' },
   { label: 'Shop', view: 'shop' },
   { label: 'About', view: 'about' },
   { label: 'Contact', view: 'contact' },
-  { label: 'Admin', view: 'admin' },
 ]
+
+// Admin-only nav item
+const adminNavItem: { label: string; view: ViewType } = {
+  label: 'Admin',
+  view: 'admin',
+}
 
 export default function Header() {
   const {
@@ -24,6 +30,12 @@ export default function Header() {
   const cartCount = getCartItemCount()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuRef = useRef<HTMLDivElement>(null)
+
+  // Check if user is admin
+  const isAdmin = user?.role === 'admin'
+
+  // Build nav items based on user role
+  const navItems = isAdmin ? [...publicNavItems, adminNavItem] : publicNavItems
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -42,6 +54,10 @@ export default function Header() {
       setUser(null)
       setUserOrders([])
       setUserMenuOpen(false)
+      // If user was on admin page, redirect to home
+      if (currentView === 'admin') {
+        setCurrentView('home')
+      }
     } catch {
       // silently fail
     }
@@ -51,7 +67,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full">
       {/* Glass morphism tropical header */}
       <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-orange-50/60 to-cyan-50/60 backdrop-blur-xl border-b border-orange-200/30" />
-      
+
       <div className="relative container mx-auto flex h-18 items-center justify-between px-4">
         {/* Logo with tropical accent */}
         <button
@@ -79,7 +95,7 @@ export default function Header() {
                   : 'text-foreground/60 hover:text-foreground hover:bg-white/50'
               }`}
             >
-              {item.view === 'admin' ? <LayoutDashboard className="h-3.5 w-3.5 mr-1" /> : null}{item.label}
+              {item.view === 'admin' ? <LayoutDashboard className="h-3.5 w-3.5 mr-1 inline" /> : null}{item.label}
             </button>
           ))}
         </nav>
@@ -157,6 +173,19 @@ export default function Header() {
                         <Package className="h-4 w-4" />
                         My Orders
                       </button>
+                      {/* Admin link in dropdown — only for admins */}
+                      {isAdmin && (
+                        <button
+                          onClick={() => {
+                            setCurrentView('admin')
+                            setUserMenuOpen(false)
+                          }}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/60 hover:text-foreground hover:bg-orange-50 transition-colors"
+                        >
+                          <LayoutDashboard className="h-4 w-4" />
+                          Admin Dashboard
+                        </button>
+                      )}
                     </div>
 
                     <div className="border-t border-orange-100 p-1.5">
@@ -221,6 +250,7 @@ export default function Header() {
                       : 'text-foreground/50'
                   }`}
                 >
+                  {item.view === 'admin' && <LayoutDashboard className="h-4 w-4 mr-1.5 inline" />}
                   {item.label}
                 </motion.button>
               ))}

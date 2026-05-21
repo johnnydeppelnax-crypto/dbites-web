@@ -21,32 +21,16 @@ export default function Footer() {
       {/* Tropical gradient top line */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-cyan-500 to-purple-500" />
 
-      {/* 3D floating fruits in footer - subtle dark tones */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ perspective: '800px' }}>
-        <div className="absolute top-8 left-[4%] animate-drift-slow">
-          <div className="fruit-3d w-20 h-20 rounded-full overflow-hidden opacity-10">
-            <img src="/products/3d-mango.png" alt="" className="w-full h-full object-contain p-2" style={{ filter: 'brightness(0.4) saturate(0.3)' }} />
-          </div>
+      {/* Lightweight floating fruit accents */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-8 left-[4%] animate-float-gentle-1">
+          <span className="text-3xl opacity-[0.08] select-none" role="img" aria-label="mango">🥭</span>
         </div>
-        <div className="absolute bottom-8 right-[6%] animate-drift-medium">
-          <div className="fruit-3d w-18 h-18 rounded-full overflow-hidden opacity-10">
-            <img src="/products/3d-lemon.png" alt="" className="w-full h-full object-contain p-2" style={{ filter: 'brightness(0.4) saturate(0.3)' }} />
-          </div>
+        <div className="absolute bottom-8 right-[6%] animate-float-gentle-2">
+          <span className="text-2xl opacity-[0.08] select-none" role="img" aria-label="lemon">🍋</span>
         </div>
-        <div className="absolute top-1/2 right-[1%] animate-float3d-2 hidden lg:block">
-          <div className="fruit-3d w-14 h-14 rounded-full overflow-hidden opacity-8">
-            <img src="/products/3d-orange.png" alt="" className="w-full h-full object-contain p-1" style={{ filter: 'brightness(0.4) saturate(0.3)' }} />
-          </div>
-        </div>
-        <div className="absolute top-[20%] left-[40%] animate-float3d-3 hidden md:block">
-          <div className="fruit-3d w-10 h-10 rounded-full overflow-hidden opacity-6">
-            <img src="/products/3d-lime.png" alt="" className="w-full h-full object-contain p-1" style={{ filter: 'brightness(0.4) saturate(0.3)' }} />
-          </div>
-        </div>
-        <div className="absolute bottom-[30%] left-[20%] animate-splash-bounce hidden lg:block">
-          <div className="fruit-3d w-12 h-12 rounded-full overflow-hidden opacity-6">
-            <img src="/products/3d-passionfruit.png" alt="" className="w-full h-full object-contain p-1" style={{ filter: 'brightness(0.4) saturate(0.3)' }} />
-          </div>
+        <div className="absolute top-1/2 right-[1%] animate-float-gentle-3 hidden lg:block">
+          <span className="text-xl opacity-[0.06] select-none" role="img" aria-label="orange">🍊</span>
         </div>
       </div>
 

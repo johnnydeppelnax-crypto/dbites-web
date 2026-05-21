@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useStore } from '@/lib/store'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
 
 import Header from '@/components/header'
 import Hero from '@/components/hero'
@@ -21,15 +22,16 @@ import LoginModal from '@/components/login-modal'
 import FloatingFruits from '@/components/floating-fruits'
 
 const pageVariants = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
 }
 
 export default function Home() {
   const { currentView, setProducts, products, user, setUser, setAuthLoading, setUserOrders } = useStore()
-  const isAdmin = currentView === 'admin'
-  const isAccount = currentView === 'account'
+  const isAdminView = currentView === 'admin'
+  const isAccountView = currentView === 'account'
+  const isUserAdmin = user?.role === 'admin'
 
   // Fetch products on mount
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function Home() {
             // Load user orders
             const ordersRes = await fetch('/api/auth/me')
             if (ordersRes.ok) {
-              const ordersData = await ordersRes.json()
+              const ordersData = await res.json()
               setUserOrders(ordersData.orders)
             }
           }
@@ -83,22 +85,47 @@ export default function Home() {
     }
   }, [])
 
-  // Admin view has its own full-page layout
-  if (isAdmin) {
-    return (
-      <div className="min-h-screen">
-        <Header />
-        <AdminDashboard />
-        <CartDrawer />
-        <CheckoutModal />
-        <ProductDetail />
-        <LoginModal />
-      </div>
-    )
+  // Admin view — only accessible by admin users
+  if (isAdminView) {
+    // Non-admin users are redirected to home
+    if (user && !isUserAdmin) {
+      setCurrentView('home')
+    }
+    // Not logged in — prompt sign in
+    if (!user) {
+      return (
+        <div className="min-h-screen">
+          <Header />
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-center p-8">
+              <h2 className="text-2xl font-bold mb-3">Admin Access Required</h2>
+              <p className="text-foreground/60 mb-6">Please sign in with an admin account to access this page.</p>
+              <Button onClick={() => useStore.getState().setLoginModalOpen(true)} className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold rounded-xl px-6 py-3">
+                Sign In
+              </Button>
+            </div>
+          </div>
+          <LoginModal />
+        </div>
+      )
+    }
+    // Admin user — show dashboard
+    if (isUserAdmin) {
+      return (
+        <div className="min-h-screen">
+          <Header />
+          <AdminDashboard />
+          <CartDrawer />
+          <CheckoutModal />
+          <ProductDetail />
+          <LoginModal />
+        </div>
+      )
+    }
   }
 
   // Account view
-  if (isAccount) {
+  if (isAccountView) {
     return (
       <div className="min-h-screen">
         <Header />
@@ -114,7 +141,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col relative">
-      {/* Global subtle 3D floating fruits background */}
+      {/* Global subtle floating fruits background — lazy loaded, SSR disabled */}
       <FloatingFruits variant="full" />
 
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -128,7 +155,7 @@ export default function Home() {
               initial="initial"
               animate="animate"
               exit="exit"
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
             >
               <Hero />
               <FeaturedProducts />
@@ -143,7 +170,7 @@ export default function Home() {
               initial="initial"
               animate="animate"
               exit="exit"
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
             >
               <ProductCatalog />
             </motion.div>
@@ -156,7 +183,7 @@ export default function Home() {
               initial="initial"
               animate="animate"
               exit="exit"
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
             >
               <AboutSection />
             </motion.div>
@@ -169,7 +196,7 @@ export default function Home() {
               initial="initial"
               animate="animate"
               exit="exit"
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
             >
               <ContactSection />
             </motion.div>

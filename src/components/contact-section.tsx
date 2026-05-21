@@ -31,36 +31,22 @@ export default function ContactSection() {
 
   return (
     <section className="py-20 md:py-28 bg-tropical-warm relative overflow-hidden">
-      {/* Prominent 3D floating fruits */}
-      <div className="absolute inset-0 pointer-events-none" style={{ perspective: '1200px' }}>
-        <div className="absolute top-20 -left-8 animate-drift-slow">
-          <div className="fruit-3d-prominent w-28 h-28 md:w-44 md:h-44 rounded-full overflow-hidden opacity-25 fruit-3d-shine">
-            <img src="/products/3d-mango.png" alt="" className="w-full h-full object-contain p-2" />
-          </div>
+      {/* Lightweight floating fruit accents */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 -left-8 animate-float-gentle-1">
+          <span className="text-3xl md:text-5xl opacity-18 select-none" role="img" aria-label="mango">🥭</span>
         </div>
-        <div className="absolute bottom-16 -right-10 animate-drift-medium">
-          <div className="fruit-3d-prominent w-24 h-24 md:w-40 md:h-40 rounded-full overflow-hidden opacity-25 fruit-3d-shine">
-            <img src="/products/3d-orange.png" alt="" className="w-full h-full object-contain p-2" />
-          </div>
-        </div>
-        <div className="absolute top-1/2 left-[2%] animate-float3d-3 hidden lg:block">
-          <div className="fruit-3d w-14 h-14 rounded-full overflow-hidden opacity-30 fruit-3d-shine border border-white/40">
-            <img src="/products/3d-passionfruit.png" alt="" className="w-full h-full object-contain p-1" />
-          </div>
-        </div>
-        <div className="absolute bottom-1/3 right-[3%] animate-float3d-2 hidden md:block">
-          <div className="fruit-3d w-16 h-16 rounded-full overflow-hidden opacity-25 fruit-3d-shine border border-white/40">
-            <img src="/products/3d-lime.png" alt="" className="w-full h-full object-contain p-1" />
-          </div>
+        <div className="absolute bottom-16 -right-10 animate-float-gentle-2">
+          <span className="text-3xl md:text-5xl opacity-18 select-none" role="img" aria-label="orange">🍊</span>
         </div>
       </div>
 
       <div className="relative container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-purple-100 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest mb-4">
@@ -77,7 +63,7 @@ export default function ContactSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }}>
             <div className="p-8 rounded-2xl bg-white/80 backdrop-blur-sm border border-orange-200/40 shadow-lg">
               <h3 className="text-lg font-bold mb-6">Send us a message</h3>
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -101,9 +87,9 @@ export default function ContactSection() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="space-y-4">
+          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} className="space-y-4">
             {contactInfo.map((info, i) => (
-              <motion.div key={info.title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.08 }} className="flex items-start gap-4 p-5 rounded-2xl bg-white/70 backdrop-blur-sm border border-orange-200/30 hover:border-orange-300/50 transition-colors duration-300 hover:shadow-md">
+              <motion.div key={info.title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.06 }} className="flex items-start gap-4 p-5 rounded-2xl bg-white/70 backdrop-blur-sm border border-orange-200/30 hover:border-orange-300/50 transition-colors duration-300 hover:shadow-md">
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${info.bg} flex items-center justify-center shrink-0 shadow-sm`}>
                   <info.icon className="h-5 w-5 text-foreground/70" />
                 </div>
