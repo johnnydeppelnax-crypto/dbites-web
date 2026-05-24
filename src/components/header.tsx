@@ -1,302 +1,206 @@
-'use client'
+"use client";
 
-import { useStore } from '@/lib/store'
-import { ShoppingCart, Menu, X, LayoutDashboard, User, LogOut, Package, ChevronDown } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { motion, AnimatePresence } from 'framer-motion'
-import type { ViewType } from '@/lib/store'
-import { useState, useRef, useEffect } from 'react'
+import { useStore } from "@/lib/store";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Menu,
+  ShoppingCart,
+  User,
+  LogOut,
+  Package,
+  Phone,
+} from "lucide-react";
+import { PhoneOTPLogin } from "./PhoneOTPLogin";
+import { useState } from "react";
 
-// Public nav items — visible to everyone
-const publicNavItems: { label: string; view: ViewType }[] = [
-  { label: 'Home', view: 'home' },
-  { label: 'Shop', view: 'shop' },
-  { label: 'About', view: 'about' },
-  { label: 'Contact', view: 'contact' },
-]
+const navLinks = [
+  { label: "Home", page: "home" as const },
+  { label: "Shop", page: "shop" as const },
+  { label: "About", page: "about" as const },
+  { label: "Contact", page: "contact" as const },
+];
 
-// Admin-only nav item
-const adminNavItem: { label: string; view: ViewType } = {
-  label: 'Admin',
-  view: 'admin',
-}
-
-export default function Header() {
-  const {
-    currentView, setCurrentView, setCartOpen, getCartItemCount,
-    mobileMenuOpen, setMobileMenuOpen, user, setUser,
-    setLoginModalOpen, setUserOrders
-  } = useStore()
-  const cartCount = getCartItemCount()
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
-  const userMenuRef = useRef<HTMLDivElement>(null)
-
-  // Check if user is admin
-  const isAdmin = user?.role === 'admin'
-
-  // Build nav items based on user role
-  const navItems = isAdmin ? [...publicNavItems, adminNavItem] : publicNavItems
-
-  // Close dropdown on click outside
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
-        setUserMenuOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' })
-      setUser(null)
-      setUserOrders([])
-      setUserMenuOpen(false)
-      // If user was on admin page, redirect to home
-      if (currentView === 'admin') {
-        setCurrentView('home')
-      }
-    } catch {
-      // silently fail
-    }
-  }
+export function Header() {
+  const { ui, setPage, setCartOpen, setLoginOpen, auth, logout, cart } =
+    useStore();
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full">
-      {/* Glass morphism tropical header */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-orange-50/60 to-cyan-50/60 backdrop-blur-xl border-b border-orange-200/30" />
-
-      <div className="relative container mx-auto flex h-18 items-center justify-between px-4">
-        {/* Logo with tropical accent */}
-        <button
-          onClick={() => setCurrentView('home')}
-          className="flex items-center gap-2.5 transition-transform hover:scale-105"
-        >
-          <div className="relative">
-            <img
-              src="/dbites-logo.png"
-              alt="D-Bites Logo"
-              className="h-10 w-auto object-contain"
-            />
-          </div>
-        </button>
-
-        {/* Desktop Nav - tropical pills */}
-        <nav className="hidden md:flex items-center gap-1 bg-white/60 backdrop-blur-sm rounded-full px-2 py-1.5 border border-orange-200/30 shadow-sm">
-          {navItems.map((item) => (
-            <button
-              key={item.view}
-              onClick={() => setCurrentView(item.view)}
-              className={`relative px-6 py-2 text-sm font-semibold transition-all duration-300 rounded-full ${
-                currentView === item.view
-                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md shadow-orange-500/25'
-                  : 'text-foreground/60 hover:text-foreground hover:bg-white/50'
-              }`}
-            >
-              {item.view === 'admin' ? <LayoutDashboard className="h-3.5 w-3.5 mr-1 inline" /> : null}{item.label}
-            </button>
-          ))}
-        </nav>
-
-        {/* Right side */}
-        <div className="flex items-center gap-3">
-          {/* Cart button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCartOpen(true)}
-            className="relative hover:bg-orange-50 transition-colors rounded-xl"
+    <>
+      <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-white/80 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <button
+            onClick={() => setPage("home")}
+            className="flex items-center gap-2 transition-transform hover:scale-105"
           >
-            <ShoppingCart className="h-5 w-5 text-foreground/70" />
-            {cartCount > 0 && (
-              <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-[10px] font-bold text-white shadow-sm"
+            <span className="text-3xl">🥭</span>
+            <span className="text-xl font-bold text-primary">
+              D-<span className="text-accent">Bites</span>
+            </span>
+          </button>
+
+          {/* Desktop Nav */}
+          <nav className="hidden items-center gap-1 md:flex">
+            {navLinks.map((link) => (
+              <Button
+                key={link.page}
+                variant="ghost"
+                onClick={() => setPage(link.page)}
+                className={`rounded-full px-4 font-medium transition-colors ${
+                  ui.currentPage === link.page
+                    ? "bg-accent/10 text-accent"
+                    : "text-foreground/70 hover:text-foreground hover:bg-muted"
+                }`}
               >
-                {cartCount}
-              </motion.span>
-            )}
-          </Button>
+                {link.label}
+              </Button>
+            ))}
+          </nav>
 
-          {/* User button */}
-          {user ? (
-            <div className="relative" ref={userMenuRef}>
-              <button
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200/50 hover:shadow-md transition-all"
-              >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <span className="hidden sm:block text-sm font-semibold text-foreground/70 max-w-[80px] truncate">
-                  {user.name.split(' ')[0]}
-                </span>
-                <ChevronDown className={`h-3 w-3 text-foreground/30 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              <AnimatePresence>
-                {userMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl border border-orange-100 shadow-xl shadow-orange-500/5 overflow-hidden z-50"
-                  >
-                    {/* User info header */}
-                    <div className="px-4 py-3 bg-gradient-to-r from-orange-50 to-amber-50 border-b border-orange-100">
-                      <p className="font-bold text-sm text-foreground">{user.name}</p>
-                      <p className="text-xs text-foreground/40">{user.email}</p>
-                    </div>
-
-                    <div className="p-1.5">
-                      <button
-                        onClick={() => {
-                          setCurrentView('account')
-                          setUserMenuOpen(false)
-                        }}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/60 hover:text-foreground hover:bg-orange-50 transition-colors"
-                      >
-                        <User className="h-4 w-4" />
-                        My Account
-                      </button>
-                      <button
-                        onClick={() => {
-                          setCurrentView('account')
-                          setUserMenuOpen(false)
-                        }}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/60 hover:text-foreground hover:bg-orange-50 transition-colors"
-                      >
-                        <Package className="h-4 w-4" />
-                        My Orders
-                      </button>
-                      {/* Admin link in dropdown — only for admins */}
-                      {isAdmin && (
-                        <button
-                          onClick={() => {
-                            setCurrentView('admin')
-                            setUserMenuOpen(false)
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/60 hover:text-foreground hover:bg-orange-50 transition-colors"
-                        >
-                          <LayoutDashboard className="h-4 w-4" />
-                          Admin Dashboard
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="border-t border-orange-100 p-1.5">
-                      <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        Sign Out
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ) : (
+          {/* Actions */}
+          <div className="flex items-center gap-2">
+            {/* Cart */}
             <Button
-              onClick={() => setLoginModalOpen(true)}
-              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold rounded-xl shadow-md shadow-orange-500/20 px-5 h-9 text-sm"
+              variant="ghost"
+              size="icon"
+              className="relative rounded-full"
+              onClick={() => setCartOpen(true)}
             >
-              <User className="h-4 w-4 mr-1.5" />
-              Sign In
+              <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-white">
+                  {cartCount}
+                </span>
+              )}
             </Button>
-          )}
 
-          {/* Mobile menu toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden hover:bg-orange-50 rounded-xl"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
-        </div>
-      </div>
-
-      {/* Mobile Nav - tropical style */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden border-t border-orange-200/30 bg-gradient-to-b from-white/95 via-orange-50/30 to-cyan-50/30 backdrop-blur-xl"
-          >
-            <nav className="container mx-auto flex flex-col py-3 px-4">
-              {navItems.map((item, i) => (
-                <motion.button
-                  key={item.view}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  onClick={() => {
-                    setCurrentView(item.view)
-                    setMobileMenuOpen(false)
-                  }}
-                  className={`py-3.5 text-base font-semibold text-left transition-colors border-b border-orange-100/50 last:border-0 ${
-                    currentView === item.view
-                      ? 'text-orange-600'
-                      : 'text-foreground/50'
-                  }`}
-                >
-                  {item.view === 'admin' && <LayoutDashboard className="h-4 w-4 mr-1.5 inline" />}
-                  {item.label}
-                </motion.button>
-              ))}
-
-              {/* Mobile user section */}
-              {user ? (
-                <>
-                  <button
-                    onClick={() => {
-                      setCurrentView('account')
-                      setMobileMenuOpen(false)
-                    }}
-                    className="py-3.5 text-base font-semibold text-left text-orange-600 flex items-center gap-2 border-b border-orange-100/50"
+            {/* Auth */}
+            {auth.isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="hidden items-center gap-2 rounded-full sm:flex"
                   >
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold">
-                      {user.name.charAt(0).toUpperCase()}
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                      {auth.phone?.slice(-2) || "U"}
                     </div>
-                    My Account
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleLogout()
-                      setMobileMenuOpen(false)
-                    }}
-                    className="py-3.5 text-base font-semibold text-left text-red-500 flex items-center gap-2"
+                    <span className="text-sm">{auth.phone}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem className="gap-2">
+                    <User className="h-4 w-4" />
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="gap-2">
+                    <Package className="h-4 w-4" />
+                    Orders
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="gap-2 text-destructive"
+                    onClick={logout}
                   >
                     <LogOut className="h-4 w-4" />
                     Sign Out
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => {
-                    setLoginModalOpen(true)
-                    setMobileMenuOpen(false)
-                  }}
-                  className="py-3.5 text-base font-semibold text-left text-orange-600 flex items-center gap-2"
-                >
-                  <User className="h-4 w-4" />
-                  Sign In
-                </button>
-              )}
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  )
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                variant="ghost"
+                className="hidden items-center gap-2 rounded-full sm:flex"
+                onClick={() => setLoginOpen(true)}
+              >
+                <User className="h-4 w-4" />
+                <span className="text-sm font-medium">Sign In</span>
+              </Button>
+            )}
+
+            {/* Mobile menu */}
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-72">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <span className="text-2xl">🥭</span>
+                    D-Bites
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="mt-8 flex flex-col gap-1">
+                  {navLinks.map((link) => (
+                    <Button
+                      key={link.page}
+                      variant="ghost"
+                      onClick={() => {
+                        setPage(link.page);
+                        setMobileOpen(false);
+                      }}
+                      className={`justify-start rounded-lg px-4 ${
+                        ui.currentPage === link.page
+                          ? "bg-accent/10 text-accent"
+                          : ""
+                      }`}
+                    >
+                      {link.label}
+                    </Button>
+                  ))}
+                  <div className="my-3 h-px bg-border" />
+                  {auth.isAuthenticated ? (
+                    <Button
+                      variant="ghost"
+                      className="justify-start gap-2 text-destructive"
+                      onClick={() => {
+                        logout();
+                        setMobileOpen(false);
+                      }}
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Sign Out
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      className="justify-start gap-2"
+                      onClick={() => {
+                        setLoginOpen(true);
+                        setMobileOpen(false);
+                      }}
+                    >
+                      <Phone className="h-4 w-4" />
+                      Sign In with Phone
+                    </Button>
+                  )}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </header>
+
+      {/* Login Modal */}
+      <PhoneOTPLogin />
+    </>
+  );
 }
