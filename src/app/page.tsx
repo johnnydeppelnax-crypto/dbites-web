@@ -1,19 +1,19 @@
 "use client";
 
-import { Header } from "@/components/dbites/Header";
-import { Footer } from "@/components/dbites/Footer";
-import { HeroSection } from "@/components/dbites/HeroSection";
-import { Bestsellers } from "@/components/dbites/Bestsellers";
-import { WhyChooseUs } from "@/components/dbites/WhyChooseUs";
-import { Newsletter } from "@/components/dbites/Newsletter";
-import { ShopPage } from "@/components/dbites/ShopPage";
-import { CheckoutPage } from "@/components/dbites/CheckoutPage";
-import { OrderConfirmation } from "@/components/dbites/OrderConfirmation";
-import { CartDrawer } from "@/components/dbites/CartDrawer";
-import { CookieConsent } from "@/components/dbites/CookieConsent";
-import { AboutPage } from "@/components/dbites/AboutPage";
-import { ContactPage } from "@/components/dbites/ContactPage";
-import { LegalPages } from "@/components/dbites/LegalPages";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { HeroSection } from "@/components/HeroSection";
+import { Bestsellers } from "@/components/Bestsellers";
+import { WhyChooseUs } from "@/components/WhyChooseUs";
+import { Newsletter } from "@/components/Newsletter";
+import { ShopPage } from "@/components/ShopPage";
+import { CheckoutPage } from "@/components/CheckoutPage";
+import { OrderConfirmation } from "@/components/OrderConfirmation";
+import { CartDrawer } from "@/components/CartDrawer";
+import { CookieConsent } from "@/components/CookieConsent";
+import { AboutPage } from "@/components/AboutPage";
+import { ContactPage } from "@/components/ContactPage";
+import { LegalPages } from "@/components/LegalPages";
 import { useStore } from "@/lib/store";
 import { useEffect } from "react";
 
